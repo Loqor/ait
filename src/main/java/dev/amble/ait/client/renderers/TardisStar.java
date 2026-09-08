@@ -64,13 +64,13 @@ public class TardisStar {
                 .rotationDegrees(delta));
 
         TardisStarModel.getTexturedModelData().createModel().render(matrixStack,
-                provider.getBuffer(AITRenderLayers.tardisEmissiveCullZOffsetSorted(TARDIS_STAR_TEXTURE)),
+                provider.getBuffer(AITRenderLayers.tardisEmissiveCullZOffset(TARDIS_STAR_TEXTURE)),
                 LightmapTextureManager.MAX_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV, tardis.isGrowth() ? 0.1f : 1,
                 tardis.isGrowth() ? 0.1f : 1, tardis.isGrowth() ? 0.1f : 1, 0.5f);
 
         matrixStack.scale(0.9f, 0.9f, 0.9f);
         TardisStarModel.getTexturedModelData().createModel().render(matrixStack,
-                provider.getBuffer(AITRenderLayers.tardisEmissiveCullZOffsetSorted(TARDIS_STAR_TEXTURE)),
+                provider.getBuffer(AITRenderLayers.tardisEmissiveCullZOffset(TARDIS_STAR_TEXTURE)),
                 LightmapTextureManager.MAX_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV, 1, tardis.isGrowth() ? 0.2f : 1,
                 tardis.isGrowth() ? 0f : 1, 1f);
 

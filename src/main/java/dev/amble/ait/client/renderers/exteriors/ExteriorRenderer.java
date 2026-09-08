@@ -310,13 +310,10 @@ public class ExteriorRenderer<T extends ExteriorBlockEntity> implements BlockEnt
                     ? !power ? 0.01f : 0.3f
                     : u - colorAlpha;
 
-            // Sorted, not unsorted: alpha here is the demat and remat fade, which sweeps through the
-            // partial range where draw order is visible.
-            //
             // TODO the guard above tests `emission`, which DOOM reassigns per rotation, but the layer
             // below binds `variant.emission()`, the un-adjusted base. For DOOM those disagree. Left
             // alone here because changing which texture DOOM binds is not part of this change.
-           model.renderWithAnimations(tardis, entity, this.model.getPart(), matrices, vertexConsumers.getBuffer(AITRenderLayers.tardisEmissiveCullZOffsetSorted(variant.emission())),
+           model.renderWithAnimations(tardis, entity, this.model.getPart(), matrices, vertexConsumers.getBuffer(AITRenderLayers.tardisEmissiveCullZOffset(variant.emission())),
                    0xF000F0, OverlayTexture.DEFAULT_UV, red, green, blue, alpha, tickDelta);
         }
         if (DependencyChecker.hasIris()) {
