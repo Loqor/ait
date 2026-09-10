@@ -1,0 +1,20 @@
+{
+  "id": "ait:exterior/police_box/redux_default",
+  "category": "ait:exterior/police_box",
+  "parent": "ait:exterior/police_box/default",
+  "texture": "ait:textures/blockentities/exteriors/police_box/police_box_default.png",
+  "emission": "ait:textures/blockentities/exteriors/police_box/police_box_default_emission.png",
+  "model": "ait:toyota",
+  "door": "ait:door/redux_toyota",
+  "scale": [
+    0.63,
+    0.63,
+    0.63
+  ],
+  "door_animations": {
+    "left": "toyota:leftdooropen",
+    "right": "toyota:rightdooropen",
+    "left_close": "toyota:leftdoorclose",
+    "right_close": "toyota:rightdoorclose"
+  }
+}

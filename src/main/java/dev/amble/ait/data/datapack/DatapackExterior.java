@@ -50,8 +50,7 @@ public class DatapackExterior extends ExteriorVariantSchema implements AnimatedD
                     Identifier.CODEC.optionalFieldOf("model").forGetter(DatapackExterior::model),
                     Identifier.CODEC.optionalFieldOf("door").forGetter(DatapackExterior::getDoorId),
                     PortalOffsets.CODEC.optionalFieldOf("portal_info").forGetter(ext -> Optional.ofNullable(ext.getPortalOffsets())),
-                    BedrockAnimationReference.CODEC.optionalFieldOf("left_animation").forGetter(DatapackExterior::getLeftAnimation),
-                    BedrockAnimationReference.CODEC.optionalFieldOf("right_animation").forGetter(DatapackExterior::getRightAnimation),
+                    DoorAnimationReferences.LEGACY_AWARE_CODEC.forGetter(DatapackExterior::getDoorAnimations),
                     Vec3d.CODEC.optionalFieldOf("scale", new Vec3d(1, 1, 1)).forGetter(DatapackExterior::getScale),
                     TravelAnimationMap.CODEC.optionalFieldOf("animations", new TravelAnimationMap())
                             .forGetter(DatapackExterior::getAnimations)
@@ -68,13 +67,12 @@ public class DatapackExterior extends ExteriorVariantSchema implements AnimatedD
     protected final Identifier model;
     protected final Identifier doorId;
     protected final PortalOffsets portalOffsets;
-    protected final BedrockAnimationReference leftAnimation;
-    protected final BedrockAnimationReference rightAnimation;
+    protected final DoorAnimationReferences doorAnimations;
     protected final Vec3d scale;
     protected final TravelAnimationMap animations;
 
     public DatapackExterior(Identifier id, Identifier category, Identifier parent, Identifier texture,
-                            Identifier emission, Optional<Loyalty> loyalty, BiomeOverrides overrides, Vec3d seatTranslations, boolean hasTransparentDoors, Optional<Identifier> model, Optional<Identifier> door, Optional<PortalOffsets> offsets, Optional<BedrockAnimationReference> leftAnimation, Optional<BedrockAnimationReference> rightAnimation, Vec3d scale, TravelAnimationMap animations) {
+                            Identifier emission, Optional<Loyalty> loyalty, BiomeOverrides overrides, Vec3d seatTranslations, boolean hasTransparentDoors, Optional<Identifier> model, Optional<Identifier> door, Optional<PortalOffsets> offsets, DoorAnimationReferences doorAnimations, Vec3d scale, TravelAnimationMap animations) {
         super(category, id, loyalty);
         this.parent = parent;
         this.texture = texture;
@@ -86,8 +84,7 @@ public class DatapackExterior extends ExteriorVariantSchema implements AnimatedD
         this.model = model.orElse(null);
         this.doorId = door.orElse(null);
         this.portalOffsets = offsets.orElse(null);
-        this.leftAnimation = leftAnimation.orElse(null);
-        this.rightAnimation = rightAnimation.orElse(null);
+        this.doorAnimations = doorAnimations;
         this.scale = scale;
         this.animations = animations;
     }
@@ -116,16 +113,17 @@ public class DatapackExterior extends ExteriorVariantSchema implements AnimatedD
     }
 
     private Optional<Identifier> getDoorId() {
-        return Optional.ofNullable(this.door().id());
+        return Optional.ofNullable(this.doorId);
     }
 
     @Override
     public DoorSchema door() {
-        if (doorId == null) {
-            return this.getParent().door();
-        }
+        ExteriorVariantSchema parent = this.getParent();
 
-        return DoorRegistry.getInstance().getOrElse(doorId, this.getParent().door());
+        if (doorId == null)
+            return parent != null ? parent.door() : null;
+
+        return DoorRegistry.getInstance().getOrElse(doorId, parent != null ? parent.door() : null);
     }
 
     public BiomeOverrides overrides() {
@@ -207,12 +205,26 @@ public class DatapackExterior extends ExteriorVariantSchema implements AnimatedD
 
     @Override
     public Optional<BedrockAnimationReference> getLeftAnimation() {
-        return Optional.ofNullable(this.leftAnimation);
+        return doorAnimations.getLeft();
     }
 
     @Override
     public Optional<BedrockAnimationReference> getRightAnimation() {
-        return Optional.ofNullable(this.rightAnimation);
+        return doorAnimations.getRight();
+    }
+
+    @Override
+    public Optional<BedrockAnimationReference> getLeftCloseAnimation() {
+        return doorAnimations.getLeftClose();
+    }
+
+    @Override
+    public Optional<BedrockAnimationReference> getRightCloseAnimation() {
+        return doorAnimations.getRightClose();
+    }
+
+    public DoorAnimationReferences getDoorAnimations() {
+        return doorAnimations;
     }
 
     @Override

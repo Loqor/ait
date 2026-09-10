@@ -1,0 +1,14 @@
+{
+  "id": "ait:door/redux_capsule",
+  "open_sound": "minecraft:block.iron_door.open",
+  "close_sound": "minecraft:block.iron_door.close",
+  "model": "ait:tt_capsule_door",
+  "is_double": true,
+  "portal_info": {
+    "north": [0.0, 0.04, -0.3],
+    "south": [0.0, 0.04, 0.3],
+    "east": [0.0, 0.04, -0.3],
+    "west": [0.0, 0.04, -0.3]
+  }
+}
+

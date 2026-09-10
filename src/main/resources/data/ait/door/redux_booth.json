@@ -1,0 +1,14 @@
+{
+  "id": "ait:door/redux_booth",
+  "open_sound": "minecraft:block.iron_door.open",
+  "close_sound": "minecraft:block.iron_door.close",
+  "model": "ait:booth_door",
+  "is_double": false,
+  "portal_info": {
+    "north": [0.0, 0.125, -0.48],
+    "south": [0.0, 0.125, 0.48],
+    "east": [0.48, 0.125, 0.0],
+    "west": [-0.48, 0.125, 0.0]
+  }
+}
+

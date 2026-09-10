@@ -1,0 +1,295 @@
+{
+  "format_version": "1.12.0",
+  "minecraft:geometry": [
+    {
+      "description": {
+        "identifier": "geometry.ClassicDoorModel",
+        "texture_width": 512,
+        "texture_height": 512,
+        "visible_bounds_width": 4,
+        "visible_bounds_height": 5.5,
+        "visible_bounds_offset": [
+          0,
+          2.25,
+          0
+        ]
+      },
+      "bones": [
+        {
+          "name": "classic",
+          "pivot": [
+            0,
+            -2,
+            9
+          ]
+        },
+        {
+          "name": "Posts",
+          "parent": "classic",
+          "pivot": [
+            0,
+            -2,
+            9
+          ],
+          "cubes": [
+            {
+              "origin": [
+                -17,
+                0,
+                -8
+              ],
+              "size": [
+                4,
+                60,
+                4
+              ],
+              "uv": [
+                220,
+                162
+              ]
+            },
+            {
+              "origin": [
+                -18,
+                0,
+                -9
+              ],
+              "size": [
+                4,
+                60,
+                4
+              ],
+              "pivot": [
+                -1,
+                -4,
+                9
+              ],
+              "rotation": [
+                0,
+                -90,
+                0
+              ],
+              "uv": [
+                203,
+                162
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Doors",
+          "parent": "classic",
+          "pivot": [
+            0,
+            -2,
+            9
+          ]
+        },
+        {
+          "name": "right_door",
+          "parent": "Doors",
+          "pivot": [
+            -12.5,
+            27.5,
+            -5.5
+          ],
+          "cubes": [
+            {
+              "origin": [
+                -13,
+                0,
+                -6
+              ],
+              "size": [
+                13,
+                53,
+                1
+              ],
+              "uv": [
+                0,
+                189
+              ]
+            },
+            {
+              "origin": [
+                -10,
+                28,
+                -5
+              ],
+              "size": [
+                8,
+                10,
+                3
+              ],
+              "uv": [
+                0,
+                244
+              ]
+            },
+            {
+              "origin": [
+                -13,
+                0,
+                -6.5
+              ],
+              "size": [
+                13,
+                53,
+                0
+              ],
+              "uv": [
+                203,
+                76
+              ]
+            }
+          ]
+        },
+        {
+          "name": "left_door",
+          "parent": "Doors",
+          "pivot": [
+            12.5,
+            27.5,
+            -5.5
+          ],
+          "cubes": [
+            {
+              "origin": [
+                0,
+                0,
+                -6
+              ],
+              "size": [
+                13,
+                53,
+                1
+              ],
+              "uv": [
+                194,
+                21
+              ]
+            },
+            {
+              "origin": [
+                1,
+                26,
+                -7
+              ],
+              "size": [
+                1,
+                2,
+                1
+              ],
+              "uv": [
+                0,
+                29
+              ]
+            },
+            {
+              "origin": [
+                4.5,
+                31.5,
+                -6.01
+              ],
+              "size": [
+                3,
+                3,
+                0
+              ],
+              "uv": [
+                5,
+                29
+              ]
+            },
+            {
+              "origin": [
+                2,
+                28,
+                -5
+              ],
+              "size": [
+                8,
+                10,
+                3
+              ],
+              "uv": [
+                1,
+                258
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Walls",
+          "parent": "classic",
+          "pivot": [
+            0,
+            -2,
+            9
+          ],
+          "cubes": [
+            {
+              "origin": [
+                -13,
+                53,
+                -6
+              ],
+              "size": [
+                26,
+                3,
+                1
+              ],
+              "uv": [
+                29,
+                106
+              ]
+            },
+            {
+              "origin": [
+                -13,
+                53,
+                -6.5
+              ],
+              "size": [
+                26,
+                3,
+                0
+              ],
+              "uv": [
+                109,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "PCB",
+          "parent": "classic",
+          "pivot": [
+            0,
+            -1,
+            9
+          ],
+          "cubes": [
+            {
+              "origin": [
+                -14,
+                56,
+                -9
+              ],
+              "size": [
+                28,
+                4,
+                6
+              ],
+              "uv": [
+                237,
+                162
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "ait:door/redux_tardim",
+  "open_sound": "ait:tardis/police_box_door_open",
+  "close_sound": "ait:tardis/police_box_door_close",
+  "model": "ait:tardim_door",
+  "is_double": true,
+  "portal_info": {
+    "north": [0.0, 0.05, -0.499],
+    "south": [0.0, 0.0, 0.499],
+    "east": [0.499, 0.0, 0.0],
+    "west": [-0.499, 0.0, 0.0]
+  }
+}
+

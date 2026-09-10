@@ -140,7 +140,7 @@ public class DoorRenderer<T extends DoorBlockEntity> implements BlockEntityRende
             float t;
             float s;
 
-            if ((tardis.stats().getName() != null && "partytardis".equals(tardis.stats().getName().toLowerCase()) ||(!tardis.extra().getInsertedDisc().isEmpty()))) {
+            if ((tardis.stats().getName() != null && "partytardis".equalsIgnoreCase(tardis.stats().getName()) ||(!tardis.extra().getInsertedDisc().isEmpty()))) {
                 int m = 25;
                 int n = MinecraftClient.getInstance().player.age / m + MinecraftClient.getInstance().player.getId();
                 int o = DyeColor.values().length;

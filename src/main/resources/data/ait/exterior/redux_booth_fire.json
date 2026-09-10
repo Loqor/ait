@@ -1,0 +1,9 @@
+{
+  "id": "ait:exterior/booth/redux_fire",
+  "category": "ait:exterior/booth",
+  "parent": "ait:exterior/booth/fire",
+  "texture": "ait:textures/blockentities/exteriors/booth/booth_fire.png",
+  "emission": "ait:textures/blockentities/exteriors/booth/booth_fire_emission.png",
+  "model": "ait:booth",
+  "door": "ait:door/redux_booth"
+}

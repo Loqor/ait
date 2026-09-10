@@ -1,0 +1,7 @@
+{
+  "watermark": "made with duzos ait generator",
+  "id": "ait:coral_decayed",
+  "parent": "ait:coral",
+  "texture": "ait:textures/blockentities/consoles/coral_decayed.png",
+  "emission": "ait:textures/blockentities/consoles/coral_decayed_emission.png"
+}

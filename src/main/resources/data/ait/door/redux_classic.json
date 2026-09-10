@@ -1,0 +1,21 @@
+{
+  "id": "ait:door/redux_classic",
+  "open_sound": "ait:tardis/police_box_door_open",
+  "close_sound": "ait:tardis/police_box_door_close",
+  "model": "ait:classic_door",
+  "is_double": true,
+  "portal_info": {
+    "north": [0.0, 0.075, -0.47],
+    "south": [0.0, 0.075, 0.47],
+    "east": [0.47, 0.075, 0.0],
+    "west": [-0.47, 0.075, 0.0]
+  },
+  "door_animations": {
+    "left": "classic:leftdooropen",
+    "right": "classic:rightdooropen",
+    "left_close": "classic:leftdoorclose",
+    "right_close": "classic:rightdoorclose"
+  },
+  "scale": [0.64, 0.64, 0.64]
+}
+

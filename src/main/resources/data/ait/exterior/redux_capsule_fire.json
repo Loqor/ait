@@ -1,0 +1,8 @@
+{
+  "id": "ait:exterior/capsule/redux_fire",
+  "category": "ait:exterior/capsule",
+  "parent": "ait:exterior/capsule/fire",
+  "texture": "ait:textures/blockentities/exteriors/capsule/capsule_fire.png",
+  "model": "ait:tt_capsule",
+  "door": "ait:door/redux_capsule"
+}

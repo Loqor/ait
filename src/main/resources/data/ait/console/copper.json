@@ -1,0 +1,417 @@
+{
+  "watermark": "made with duzos ait generator",
+  "id": "ait:copper",
+  "type": {
+    "id": "ait:copper",
+    "name": "Redux copper",
+    "controls": [
+      {
+        "id": "ait:throttle",
+        "width": 0.17499998,
+        "height": 0.23750003,
+        "offset": [
+          -0.359375,
+          0.6250000949949026,
+          -1.0265655517578125
+        ],
+        "animation": "copper:throttle"
+      },
+      {
+        "id": "ait:handbrake",
+        "width": 0.18750001,
+        "height": 0.25000003,
+        "offset": [
+          1.4242187812924385,
+          0.19999971240758896,
+          -0.1749969320371747
+        ],
+        "animation": "copper:handbrakealt"
+      },
+      {
+        "id": "ait:protocol_116",
+        "width": 0.06249999,
+        "height": 0.15,
+        "offset": [
+          0.8664093101397157,
+          0.4625002359971404,
+          -0.8343749968335032
+        ],
+        "animation": "copper:stabilizers"
+      },
+      {
+        "id": "ait:fast_return",
+        "width": 0.075,
+        "height": 0.075,
+        "offset": [
+          0.2742156982421875,
+          0.7500002384185791,
+          -0.865631103515625
+        ],
+        "animation": "copper:button5"
+      },
+      {
+        "id": "ait:door_control",
+        "width": 0.08749999,
+        "height": 0.11249998,
+        "offset": [
+          0.6101531982421875,
+          0.2999997138977051,
+          -1.310943603515625
+        ],
+        "animation": "copper:crank"
+      },
+      {
+        "id": "ait:door_lock",
+        "width": 0.099999994,
+        "height": 0.14999999,
+        "offset": [
+          0.8484344482421875,
+          0.2624993324279785,
+          1.1281280517578125
+        ],
+        "animation": "copper:crank3"
+      },
+      {
+        "id": "ait:antigravs",
+        "width": 0.16250001,
+        "height": 0.16250001,
+        "offset": [
+          0.6773468013852835,
+          0.6250000009313226,
+          0.8187561025843024
+        ],
+        "animation": "copper:blackleverleft2"
+      },
+      {
+        "id": "ait:monitor",
+        "width": 0.57499975,
+        "height": 0.3874999,
+        "offset": [
+          -1.2503906358033419,
+          1.3125017127022147,
+          0.008984364569187164
+        ]
+      },
+      {
+        "id": "ait:telepathic_circuit",
+        "width": 0.34999996,
+        "height": 0.20000002,
+        "offset": [
+          0.17499694786965847,
+          0.46249985694885254,
+          1.189068604260683
+        ]
+      },
+      {
+        "id": "ait:visualiser",
+        "width": 0.125,
+        "height": 0.33749995,
+        "offset": [
+          -0.6742191342636943,
+          0.4750005714595318,
+          1.1015651691704988
+        ],
+        "animation": "copper:copperpump3"
+      },
+      {
+        "id": "ait:engine_overload",
+        "width": 0.099999994,
+        "height": 0.17500001,
+        "offset": [
+          0.8148471852764487,
+          0.5249999985098839,
+          1.0312561066821218
+        ],
+        "animation": "copper:mustardbutton"
+      },
+      {
+        "id": "ait:land_type",
+        "width": 0.15,
+        "height": 0.17500001,
+        "offset": [
+          -0.48671876825392246,
+          1.065000157803297,
+          -0.26874999795109034
+        ]
+      },
+      {
+        "id": "ait:increment",
+        "width": 0.06249999,
+        "height": 0.125,
+        "offset": [
+          1.1125000165775418,
+          0.4875005707144737,
+          -0.385937524959445
+        ],
+        "animation": "copper:needle2"
+      },
+      {
+        "id": "ait:x",
+        "width": 0.06249999,
+        "height": 0.08749999,
+        "offset": [
+          0.9132812488824129,
+          0.5374998105689883,
+          -0.570312513038516
+        ],
+        "animation": "copper:lever4"
+      },
+      {
+        "id": "ait:y",
+        "width": 0.06249999,
+        "height": 0.0875,
+        "offset": [
+          0.8781249979510903,
+          0.5249998103827238,
+          -0.6609375113621354
+        ],
+        "animation": "copper:lever5"
+      },
+      {
+        "id": "ait:z",
+        "width": 0.062499996,
+        "height": 0.0875,
+        "offset": [
+          0.9249999979510903,
+          0.47500000055879354,
+          -0.7359375096857548
+        ],
+        "animation": "copper:lever6"
+      },
+      {
+        "id": "ait:randomiser",
+        "width": 0.1125,
+        "height": 0.125,
+        "offset": [
+          -0.9523376412689686,
+          0.2625002386048436,
+          -0.9750061128288507
+        ],
+        "animation": "copper:pinballpump2"
+      },
+      {
+        "id": "ait:direction",
+        "width": 0.1125,
+        "height": 0.1375,
+        "offset": [
+          -0.5999938948079944,
+          0.24999994970858097,
+          1.310931397601962
+        ],
+        "animation": "copper:cranklever"
+      },
+      {
+        "id": "ait:protocol_813",
+        "width": 0.099999994,
+        "height": 0.125,
+        "offset": [
+          -1.2335998537018895,
+          0.5249995710328221,
+          -0.17499999981373549
+        ]
+      },
+      {
+        "id": "ait:dimension",
+        "width": 0.31249997,
+        "height": 0.125,
+        "offset": [
+          -1.1757812583819032,
+          0.17000007256865501,
+          -0.6765625225380063
+        ]
+      },
+      {
+        "id": "ait:refueler",
+        "width": 0.16250001,
+        "height": 0.17500001,
+        "offset": [
+          0.14999695774167776,
+          1.0749997105449438,
+          -0.6296875057742
+        ]
+      },
+      {
+        "id": "ait:power",
+        "width": 0.15,
+        "height": 0.16250001,
+        "offset": [
+          -1.1609344482421875,
+          0.5500001907348633,
+          0.1640625
+        ],
+        "animation": "copper:redleverright"
+      },
+      {
+        "id": "ait:protocol_1913",
+        "width": 0.17500001,
+        "height": 0.18750001,
+        "offset": [
+          1.017181414179504,
+          0.6000000443309546,
+          -0.18436888977885246
+        ],
+        "animation": "copper:wibblylever"
+      },
+      {
+        "id": "ait:alarms",
+        "width": 0.125,
+        "height": 0.125,
+        "offset": [
+          -0.85780946072191,
+          0.7249998077750206,
+          0.18124390859156847
+        ]
+      },
+      {
+        "id": "ait:save_waypoint",
+        "width": 0.16250001,
+        "height": 0.125,
+        "offset": [
+          -0.32421875,
+          0.7375003350898623,
+          0.8281219471246004
+        ]
+      },
+      {
+        "id": "ait:load_waypoint",
+        "width": 0.099999994,
+        "height": 0.0875,
+        "offset": [
+          -0.48671875055879354,
+          0.5250004287809134,
+          1.176565553061664
+        ]
+      },
+      {
+        "id": "ait:console_port",
+        "width": 0.22500002,
+        "height": 0.1375,
+        "offset": [
+          -0.0109405517578125,
+          0.7125006690621376,
+          0.8796844482421875
+        ]
+      },
+      {
+        "id": "ait:protocol_3",
+        "width": 0.1125,
+        "height": 0.18750001,
+        "offset": [
+          -0.5476501472294331,
+          1.0375003349035978,
+          0.23906249925494194
+        ],
+        "animation": "copper:blacklever"
+      },
+      {
+        "id": "ait:shields",
+        "width": 0.1375,
+        "height": 0.16250001,
+        "offset": [
+          1.514459267258644,
+          0.29999975580722094,
+          0.21327821072191
+        ],
+        "animation": "copper:tswitch"
+      },
+      {
+        "id": "ait:sonic_port",
+        "width": 0.1375,
+        "height": 0.1375,
+        "offset": [
+          0.9898498551920056,
+          0.4750000424683094,
+          0.5812560999765992
+        ]
+      },
+      {
+        "id": "ait:electrical_discharge",
+        "width": 0.08749999,
+        "height": 0.18750001,
+        "offset": [
+          -0.8484344435855746,
+          0.4625001894310117,
+          0.7390625085681677
+        ]
+      },
+      {
+        "id": "ait:protocol_19",
+        "width": 0.099999994,
+        "height": 0.18750001,
+        "offset": [
+          0.8171813935041428,
+          0.7625001901760697,
+          -0.1843719482421875
+        ],
+        "animation": "copper:lever10"
+      },
+      {
+        "id": "ait:throttle",
+        "width": 0.2375,
+        "height": 0.23750003,
+        "offset": [
+          0.015625005587935448,
+          -0.4750000163912773,
+          0.7984344754368067
+        ]
+      },
+      {
+        "id": "ait:handbrake",
+        "width": 0.3624999,
+        "height": 0.23750003,
+        "offset": [
+          -0.7218750054016709,
+          -0.5000000167638063,
+          0.44843447022140026
+        ]
+      },
+      {
+        "id": "ait:handbrake",
+        "width": 0.3624999,
+        "height": 0.23750003,
+        "offset": [
+          0.7656250167638063,
+          -0.48750001657754183,
+          -0.4515655431896448
+        ]
+      },
+      {
+        "id": "ait:handbrake",
+        "width": 0.21718899788865265,
+        "height": 0.2172005290125567,
+        "offset": [
+          -0.659375,
+          0.2320000949949026,
+          -1.265655517578125
+        ],
+        "animation": "copper:handbrake"
+      }
+    ]
+  },
+  "texture": "ait:textures/blockentities/consoles/copper_console.png",
+  "model": "ait:copper",
+  "transformations": {
+    "offset": [
+      0.5,
+      0.2,
+      -0.5
+    ],
+    "scale": [
+      1,
+      1,
+      1
+    ],
+    "rotation": [
+      0,
+      -150,
+      0
+    ]
+  },
+  "animations": {
+    "demat": "copper:flight",
+    "flight": "copper:flight",
+    "mat": "copper:flight",
+    "landed": "copper:idle"
+  },
+  "emission": "ait:textures/blockentities/consoles/copper_console_emission.png"
+}

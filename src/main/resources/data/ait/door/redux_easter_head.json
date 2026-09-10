@@ -1,0 +1,12 @@
+{
+  "id": "ait:door/redux_easter_head",
+  "open_sound": "minecraft:block.grindstone.use",
+  "close_sound": "minecraft:block.grindstone.use",
+  "model": "ait:easter_head_door",
+  "is_double": false,
+  "door_animations": {
+    "left": "easter_head_door:easter_head.exterior.open.animation",
+    "left_close": "easter_head_door:easter_head.exterior.close.animation"
+  }
+}
+

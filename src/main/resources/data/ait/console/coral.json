@@ -1,0 +1,382 @@
+{
+  "watermark": "made with duzos ait generator",
+  "id": "ait:coral",
+  "type": {
+    "id": "ait:coral",
+    "name": "Redux Coral",
+    "controls": [
+      {
+        "id": "ait:throttle",
+        "width": 0.18749999,
+        "height": 0.16250001,
+        "offset": [
+          0.016406255774199963,
+          0.7500000037252903,
+          -0.6609375244006515
+        ],
+        "animation": "coral:throttle"
+      },
+      {
+        "id": "ait:handbrake",
+        "width": 0.16250001,
+        "height": 0.22500002,
+        "offset": [
+          1.0734375165775418,
+          0.2624999964609742,
+          -0.8734375275671482
+        ],
+        "animation": "coral:handbrake"
+      },
+      {
+        "id": "ait:protocol_116",
+        "width": 0.06249999,
+        "height": 0.1,
+        "offset": [
+          -0.7453125081956387,
+          0.5500003825873137,
+          0.20078123826533556
+        ],
+        "animation": "coral:switch24"
+      },
+      {
+        "id": "ait:fast_return",
+        "width": 0.12500001,
+        "height": 0.11250001,
+        "offset": [
+          0.7000000067055225,
+          0.5499999988824129,
+          -0.20039063785225153
+        ],
+        "animation": "coral:box"
+      },
+      {
+        "id": "ait:door_control",
+        "width": 0.1375,
+        "height": 0.14999999,
+        "offset": [
+          1.222656256519258,
+          0.2624996146187186,
+          0.7230468932539225
+        ]
+      },
+      {
+        "id": "ait:door_lock",
+        "width": 0.099999994,
+        "height": 0.09999998,
+        "offset": [
+          -1.1023437762632966,
+          0.5499996189028025,
+          0.5757812689989805
+        ]
+      },
+      {
+        "id": "ait:antigravs",
+        "width": 0.17500001,
+        "height": 0.16250001,
+        "offset": [
+          1.026562513783574,
+          0.5625001918524504,
+          0.5898437444120646
+        ],
+        "animation": "coral:lever"
+      },
+      {
+        "id": "ait:monitor",
+        "width": 0.36249992,
+        "height": 0.31249997,
+        "offset": [
+          0.3859374951571226,
+          0.8250013394281268,
+          0.6128906365483999
+        ]
+      },
+      {
+        "id": "ait:protocol_19",
+        "width": 0.06249999,
+        "height": 0.1,
+        "offset": [
+          -0.7960937554016709,
+          0.537499756552279,
+          0.27695312164723873
+        ],
+        "animation": "coral:switch25"
+      },
+      {
+        "id": "ait:telepathic_circuit",
+        "width": 0.17500004,
+        "height": 0.15,
+        "offset": [
+          -0.3125000046566129,
+          0.45000019017606974,
+          -0.8390625016763806
+        ],
+        "animation": "coral:keypad3"
+      },
+      {
+        "id": "ait:land_type",
+        "width": 0.23750003,
+        "height": 0.099999994,
+        "offset": [
+          0.7398437662050128,
+          0.7150001563131809,
+          -0.40507811680436134
+        ],
+        "animation": "coral:bow"
+      },
+      {
+        "id": "ait:engine_overload",
+        "width": 0.1375,
+        "height": 0.1,
+        "offset": [
+          -0.6828126898035407,
+          0.6250001918524504,
+          0.06328086648136377
+        ]
+      },
+      {
+        "id": "ait:visualiser",
+        "width": 0.1375,
+        "height": 0.16250001,
+        "offset": [
+          0.7140626860782504,
+          0.3749999972060323,
+          0.8023437531664968
+        ],
+        "animation": "coral:ball"
+      },
+      {
+        "id": "ait:increment",
+        "width": 0.1125,
+        "height": 0.112500004,
+        "offset": [
+          -0.0007812399417161942,
+          0.5875001922249794,
+          1.2890625316649675
+        ],
+        "animation": "coral:crank"
+      },
+      {
+        "id": "ait:x",
+        "width": 0.099999994,
+        "height": 0.099999994,
+        "offset": [
+          0.9898437727242708,
+          0.450000093318522,
+          0.3039062600582838
+        ],
+        "animation": "coral:switch"
+      },
+      {
+        "id": "ait:y",
+        "width": 0.112500004,
+        "height": 0.1,
+        "offset": [
+          1.0140625247731805,
+          0.45000018924474716,
+          0.10195313300937414
+        ],
+        "animation": "coral:switch3"
+      },
+      {
+        "id": "ait:z",
+        "width": 0.1,
+        "height": 0.1,
+        "offset": [
+          1.0640625273808837,
+          0.43750028498470783,
+          -0.08671874366700649
+        ],
+        "animation": "coral:switch5"
+      },
+      {
+        "id": "ait:randomiser",
+        "width": 0.125,
+        "height": 0.125,
+        "offset": [
+          0.2218750175088644,
+          0.6125000976026058,
+          -0.49882812704890966
+        ],
+        "animation": "coral:ball4"
+      },
+      {
+        "id": "ait:direction",
+        "width": 0.15,
+        "height": 0.15,
+        "offset": [
+          -0.0015624836087226868,
+          0.37499990314245224,
+          1.337890642695129
+        ]
+      },
+      {
+        "id": "ait:protocol_813",
+        "width": 0.1125,
+        "height": 0.1125,
+        "offset": [
+          -1.185156256891787,
+          0.3999998066574335,
+          0.6890625087544322
+        ]
+      },
+      {
+        "id": "ait:dimension",
+        "width": 0.21250002,
+        "height": 0.125,
+        "offset": [
+          -0.6140624955296516,
+          0.42000007536262274,
+          0.8394531309604645
+        ]
+      },
+      {
+        "id": "ait:refueler",
+        "width": 0.125,
+        "height": 0.099999994,
+        "offset": [
+          0.0007812455296516418,
+          0.5749997152015567,
+          -1.1804687520489097
+        ]
+      },
+      {
+        "id": "ait:power",
+        "width": 0.15,
+        "height": 0.16250001,
+        "offset": [
+          -1.0218750229105353,
+          0.5500002857297659,
+          -0.5851562647148967
+        ],
+        "animation": "coral:lever2"
+      },
+      {
+        "id": "ait:protocol_1913",
+        "width": 0.1125,
+        "height": 0.29999998,
+        "offset": [
+          -1.258593762293458,
+          0.24999980442225933,
+          0.5769531261175871
+        ],
+        "animation": "coral:handbrake2"
+      },
+      {
+        "id": "ait:alarms",
+        "width": 0.125,
+        "height": 0.125,
+        "offset": [
+          -0.3843750134110451,
+          0.5750000923871994,
+          -0.5351562639698386
+        ]
+      },
+      {
+        "id": "ait:save_waypoint",
+        "width": 0.07499999,
+        "height": 0.074999996,
+        "offset": [
+          0.80078125,
+          0.537500761449337,
+          0.07656250149011612
+        ],
+        "animation": "coral:remote"
+      },
+      {
+        "id": "ait:load_waypoint",
+        "width": 0.07499999,
+        "height": 0.074999996,
+        "offset": [
+          0.8007812770083547,
+          0.5375005733221769,
+          -0.02343749813735485
+        ],
+        "animation": "coral:remote"
+      },
+      {
+        "id": "ait:console_port",
+        "width": 0.1375,
+        "height": 0.1125,
+        "offset": [
+          0.7257812488824129,
+          0.5875006653368473,
+          0.2390625039115548
+        ]
+      },
+      {
+        "id": "ait:protocol_3",
+        "width": 0.1375,
+        "height": 0.1375,
+        "offset": [
+          -0.3484375160187483,
+          0.600000855512917,
+          0.4757812535390258
+        ],
+        "animation": "coral:ball3"
+      },
+      {
+        "id": "ait:sonic_port",
+        "width": 0.125,
+        "height": 0.08749999,
+        "offset": [
+          0.6019531404599547,
+          0.6249998062849045,
+          0.0007812539115548134
+        ]
+      },
+      {
+        "id": "ait:electrical_discharge",
+        "width": 0.07499999,
+        "height": 0.1,
+        "offset": [
+          -1.0578126963227987,
+          0.39999999664723873,
+          -0.22421894501894712
+        ],
+        "animation": "coral:knob2"
+      },
+      {
+        "id": "ait:shields",
+        "width": 0.099999994,
+        "height": 0.21250002,
+        "offset": [
+          -1.2734375027939677,
+          0.1874997541308403,
+          -0.5624999990686774
+        ],
+        "animation": "coral:pully"
+      },
+      {
+        "id": "ait:hammer_hanger",
+        "width": 0.15,
+        "height": 0.42499986,
+        "offset": [
+          1.2765621216967702,
+          -0.05000000726431608,
+          -0.5242195194587111
+        ]
+      }
+    ]
+  },
+  "texture": "ait:textures/blockentities/consoles/coral.png",
+  "emission": "ait:textures/blockentities/consoles/coral_emission.png",
+  "model": "ait:coral",
+  "transformations": {
+    "offset": [
+      0.5,
+      -0.1,
+      -0.5
+    ],
+    "scale": [
+      1,
+      1,
+      1
+    ]
+  },
+  "animations": {
+    "demat": "coral:flight",
+    "flight": "coral:flight",
+    "mat": "coral:flight",
+    "landed": "coral:idle"
+  }
+}

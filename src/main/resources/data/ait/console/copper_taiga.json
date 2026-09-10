@@ -1,0 +1,6 @@
+{
+  "watermark": "made with duzos ait generator",
+  "id": "ait:copper_taiga",
+  "parent": "ait:copper",
+  "texture": "ait:textures/blockentities/consoles/copper_taiga_console.png"
+}

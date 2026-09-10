@@ -1,0 +1,9 @@
+{
+  "id": "ait:exterior/tardim/redux_default",
+  "category": "ait:exterior/tardim",
+  "parent": "ait:exterior/tardim/default",
+  "texture": "ait:textures/blockentities/exteriors/tardim/tardim_default.png",
+  "emission": "ait:textures/blockentities/exteriors/tardim/tardim_default_emission.png",
+  "model": "ait:tardim",
+  "door": "ait:door/redux_tardim"
+}

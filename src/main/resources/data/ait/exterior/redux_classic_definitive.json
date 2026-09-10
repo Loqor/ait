@@ -1,0 +1,20 @@
+{
+  "id": "ait:exterior/classic/redux_definitive",
+  "category": "ait:exterior/classic",
+  "parent": "ait:exterior/classic/definitive",
+  "texture": "ait:textures/blockentities/exteriors/classic/classic_definitive.png",
+  "emission": "ait:textures/blockentities/exteriors/classic/classic_definitive_emission.png",
+  "model": "ait:classic",
+  "door": "ait:door/redux_classic",
+  "scale": [
+    0.64,
+    0.64,
+    0.64
+  ],
+  "door_animations": {
+    "left": "classic:leftdooropen",
+    "right": "classic:rightdooropen",
+    "left_close": "classic:leftdoorclose",
+    "right_close": "classic:rightdoorclose"
+  }
+}

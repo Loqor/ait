@@ -1,15 +1,14 @@
 package dev.amble.ait.data.schema.exterior.variant.classic.client;
 
-import org.joml.Vector3f;
-
-import net.minecraft.util.Identifier;
-
 import dev.amble.ait.AITMod;
-import dev.amble.ait.client.models.exteriors.ClassicExteriorModel;
-import dev.amble.ait.client.models.exteriors.SimpleExteriorModel;
+import dev.amble.ait.client.models.exteriors.BedrockExteriorModel;
+import dev.amble.ait.client.models.exteriors.ExteriorModel;
 import dev.amble.ait.core.tardis.handler.BiomeHandler;
 import dev.amble.ait.data.datapack.exterior.BiomeOverrides;
 import dev.amble.ait.data.schema.exterior.ClientExteriorVariantSchema;
+import dev.amble.lib.client.bedrock.BedrockModelRegistry;
+import net.minecraft.util.Identifier;
+import org.joml.Vector3f;
 
 // a useful class for creating tardim variants as they all have the same filepath you know
 public abstract class ClientClassicBoxVariant extends ClientExteriorVariantSchema {
@@ -32,8 +31,8 @@ public abstract class ClientClassicBoxVariant extends ClientExteriorVariantSchem
     }
 
     @Override
-    public SimpleExteriorModel model() {
-        return new ClassicExteriorModel(ClassicExteriorModel.getTexturedModelData().createModel());
+    public ExteriorModel model() {
+        return new BedrockExteriorModel(BedrockModelRegistry.getInstance().get(AITMod.id("classic")));
     }
 
     @Override

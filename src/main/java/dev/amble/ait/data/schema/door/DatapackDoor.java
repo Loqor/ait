@@ -18,6 +18,7 @@ import net.minecraft.util.math.Vec3d;
 
 import dev.amble.ait.AITMod;
 import dev.amble.ait.core.util.PortalOffsets;
+import dev.amble.ait.data.datapack.DoorAnimationReferences;
 import dev.amble.lib.client.bedrock.BedrockAnimationReference;
 
 public class DatapackDoor extends DoorSchema implements AnimatedDoor {
@@ -28,8 +29,10 @@ public class DatapackDoor extends DoorSchema implements AnimatedDoor {
             Identifier.CODEC.fieldOf("model").forGetter(DatapackDoor::getModelId),
             Codec.BOOL.fieldOf("is_double").forGetter(DoorSchema::isDouble),
             PortalOffsets.CODEC.optionalFieldOf("portal_info").forGetter(door -> Optional.ofNullable(door.getPortalOffsets())),
-            BedrockAnimationReference.CODEC.optionalFieldOf("left_animation").forGetter(DatapackDoor::getLeftAnimation),
-            BedrockAnimationReference.CODEC.optionalFieldOf("right_animation").forGetter(DatapackDoor::getRightAnimation),
+            BedrockAnimationReference.CODEC.optionalFieldOf("left_animation").forGetter(DatapackDoor::getRawLeftAnimation),
+            BedrockAnimationReference.CODEC.optionalFieldOf("right_animation").forGetter(DatapackDoor::getRawRightAnimation),
+            DoorAnimationReferences.CODEC.optionalFieldOf("door_animations", DoorAnimationReferences.EMPTY)
+                    .forGetter(DatapackDoor::getDoorAnimations),
             Vec3d.CODEC.optionalFieldOf("scale", new Vec3d(1, 1, 1)).forGetter(DatapackDoor::getScale),
             Vec3d.CODEC.optionalFieldOf("offset", Vec3d.ZERO).forGetter(DatapackDoor::getOffset),
             Codec.BOOL.optionalFieldOf("isDatapack", true).forGetter(DatapackDoor::wasDatapack)
@@ -43,11 +46,12 @@ public class DatapackDoor extends DoorSchema implements AnimatedDoor {
     protected final PortalOffsets portalOffsets;
     protected final BedrockAnimationReference leftAnimation;
     protected final BedrockAnimationReference rightAnimation;
+    protected final DoorAnimationReferences doorAnimations;
     protected final Vec3d scale;
     protected final Vec3d offset;
     protected final boolean initiallyDatapack;
 
-    public DatapackDoor(Identifier id, Identifier openSound, Identifier closeSound, Identifier model, boolean isDouble, Optional<PortalOffsets> portalOffsets, Optional<BedrockAnimationReference> leftAnimation, Optional<BedrockAnimationReference> rightAnimation, Vec3d scale, Vec3d offset, boolean initiallyDatapack) {
+    public DatapackDoor(Identifier id, Identifier openSound, Identifier closeSound, Identifier model, boolean isDouble, Optional<PortalOffsets> portalOffsets, Optional<BedrockAnimationReference> leftAnimation, Optional<BedrockAnimationReference> rightAnimation, DoorAnimationReferences doorAnimations, Vec3d scale, Vec3d offset, boolean initiallyDatapack) {
         super(id);
 
         this.openSound = openSound;
@@ -57,6 +61,7 @@ public class DatapackDoor extends DoorSchema implements AnimatedDoor {
         this.portalOffsets = portalOffsets.orElse(null);
         this.leftAnimation = leftAnimation.orElse(null);
         this.rightAnimation = rightAnimation.orElse(null);
+        this.doorAnimations = doorAnimations;
         this.scale = scale;
         this.offset = offset;
         this.initiallyDatapack = initiallyDatapack;
@@ -77,14 +82,42 @@ public class DatapackDoor extends DoorSchema implements AnimatedDoor {
         return SoundEvent.of(getCloseSoundId());
     }
 
+    private Optional<BedrockAnimationReference> getRawLeftAnimation() {
+        return Optional.ofNullable(leftAnimation);
+    }
+
+    private Optional<BedrockAnimationReference> getRawRightAnimation() {
+        return Optional.ofNullable(rightAnimation);
+    }
+
     @Override
     public Optional<BedrockAnimationReference> getLeftAnimation() {
+        if (!doorAnimations.isEmpty() && doorAnimations.getLeft().isPresent()) {
+            return doorAnimations.getLeft();
+        }
         return Optional.ofNullable(leftAnimation);
     }
 
     @Override
     public Optional<BedrockAnimationReference> getRightAnimation() {
+        if (!doorAnimations.isEmpty() && doorAnimations.getRight().isPresent()) {
+            return doorAnimations.getRight();
+        }
         return Optional.ofNullable(rightAnimation);
+    }
+
+    @Override
+    public Optional<BedrockAnimationReference> getLeftCloseAnimation() {
+        return doorAnimations.getLeftClose();
+    }
+
+    @Override
+    public Optional<BedrockAnimationReference> getRightCloseAnimation() {
+        return doorAnimations.getRightClose();
+    }
+
+    public DoorAnimationReferences getDoorAnimations() {
+        return doorAnimations;
     }
 
     @Override

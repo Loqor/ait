@@ -187,6 +187,12 @@ public class DatapackConsole extends ConsoleVariantSchema implements TravelAnima
         if (this.parent() instanceof SimpleType simpleType) {
             return Optional.of(simpleType);
         }
+
+        ConsoleVariantSchema sibling = this.getSameParent(val -> val.parent() instanceof SimpleType);
+        if (sibling != null && sibling.parent() instanceof SimpleType siblingType) {
+            return Optional.of(siblingType);
+        }
+
         return Optional.empty();
     }
 
@@ -197,9 +203,10 @@ public class DatapackConsole extends ConsoleVariantSchema implements TravelAnima
 
         if (found.isPresent()) return found.get();
 
-        AITMod.LOGGER.warn("DatapackConsole {} could not find parent variant matching predicate", this.id());
+        ConsoleVariantSchema result = ConsoleVariantRegistry.getInstance().toList().get(0);
+        AITMod.LOGGER.warn("DatapackConsole {} could not find parent variant matching predicate - Returning {}", this.id(), result != null ? result.id() : null);
 
-        return ConsoleVariantRegistry.HARTNELL;
+        return result;
     }
 
     public static DatapackConsole fromInputStream(InputStream stream) {

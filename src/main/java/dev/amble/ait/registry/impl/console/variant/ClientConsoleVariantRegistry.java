@@ -63,21 +63,6 @@ public class ClientConsoleVariantRegistry extends DatapackRegistry<ClientConsole
         return null;
     }
 
-    public static ClientConsoleVariantSchema withSameParent(ClientConsoleVariantSchema schema) {
-        for (ClientConsoleVariantSchema s : ClientConsoleVariantRegistry.getInstance().toList()) {
-            if (s.parent() == null)
-                continue;
-
-            if (schema.equals(s))
-                continue;
-
-            if (s.parent().parentId().equals(schema.parent().parentId()))
-                return s;
-        }
-
-        return null;
-    }
-
     @Override
     public ClientConsoleVariantSchema fallback() {
         return REGISTRY.get(HartnellVariant.REFERENCE);
@@ -103,16 +88,13 @@ public class ClientConsoleVariantRegistry extends DatapackRegistry<ClientConsole
             return convertNonDatapack(variant);
 
         return new ClientConsoleVariantSchema(variant.id()) {
-            private ClientConsoleVariantSchema sameParent; // a variant with the same parent as this one, so we have the same models n that
 	        private @Nullable Identifier texture = null;
 	        private @Nullable Identifier emission = null;
 
-            private ClientConsoleVariantSchema getSameParent() {
-                if (sameParent == null) {
-                    sameParent = withSameParent(this);
-                }
-
-                return sameParent;
+            // finds a sibling datapack console (same parent) whose raw value passes the predicate, so a missing
+            // value can be inherited without recursing into a sibling that's also missing it (was a StackOverflow)
+            private @Nullable ClientConsoleVariantSchema siblingWith(Predicate<DatapackConsole> predicate) {
+                return getSameParent(val -> ConsoleVariantRegistry.getInstance().get(val.id()) instanceof DatapackConsole dp && predicate.test(dp));
             }
 
 	        private ClientConsoleVariantSchema getSameParent(Predicate<ClientConsoleVariantSchema> predicate) {
@@ -181,9 +163,8 @@ public class ClientConsoleVariantRegistry extends DatapackRegistry<ClientConsole
             @Override
             public float[] sonicItemRotations() {
                 if (variant.sonicRotation().isEmpty()) {
-                    if (getSameParent() == null) return new float[]{0, 0};
-
-                    return getSameParent().sonicItemRotations();
+                    ClientConsoleVariantSchema sibling = siblingWith(dp -> !dp.sonicRotation().isEmpty());
+                    return sibling != null ? sibling.sonicItemRotations() : new float[]{0, 0};
                 }
 
                 float[] result = new float[2];
@@ -197,10 +178,9 @@ public class ClientConsoleVariantRegistry extends DatapackRegistry<ClientConsole
 
             @Override
             public Vector3f sonicItemTranslations() {
-                if (variant.sonicTranslation().equals(0,0,0)) {
-                    if (getSameParent() == null) return new Vector3f(0,0,0);
-
-                    return getSameParent().sonicItemTranslations();
+                if (variant.sonicTranslation().equals(0, 0, 0)) {
+                    ClientConsoleVariantSchema sibling = siblingWith(dp -> !dp.sonicTranslation().equals(0, 0, 0));
+                    return sibling != null ? sibling.sonicItemTranslations() : new Vector3f(0, 0, 0);
                 }
 
                 return variant.sonicTranslation();
@@ -209,9 +189,8 @@ public class ClientConsoleVariantRegistry extends DatapackRegistry<ClientConsole
             @Override
             public float[] handlesRotations() {
                 if (variant.handlesRotation().isEmpty()) {
-                    if (getSameParent() == null) return new float[]{0, 0};
-
-                    return getSameParent().handlesRotations();
+                    ClientConsoleVariantSchema sibling = siblingWith(dp -> !dp.handlesRotation().isEmpty());
+                    return sibling != null ? sibling.handlesRotations() : new float[]{0, 0};
                 }
 
                 float[] result = new float[2];
@@ -225,10 +204,9 @@ public class ClientConsoleVariantRegistry extends DatapackRegistry<ClientConsole
 
             @Override
             public Vector3f handlesTranslations() {
-                if (variant.handlesTranslation().equals(0,0,0)) {
-                    if (getSameParent() == null) return new Vector3f(0,0,0);
-
-                    return getSameParent().handlesTranslations();
+                if (variant.handlesTranslation().equals(0, 0, 0)) {
+                    ClientConsoleVariantSchema sibling = siblingWith(dp -> !dp.handlesTranslation().equals(0, 0, 0));
+                    return sibling != null ? sibling.handlesTranslations() : new Vector3f(0, 0, 0);
                 }
 
                 return variant.handlesTranslation();

@@ -6,6 +6,7 @@ import net.minecraft.util.Identifier;
 
 import dev.amble.ait.AITMod;
 import dev.amble.ait.client.models.exteriors.ClassicHudolinExteriorModel;
+import dev.amble.ait.client.models.exteriors.ExteriorModel;
 import dev.amble.ait.client.models.exteriors.SimpleExteriorModel;
 
 public class ClientClassicBoxShalkaVariant extends ClientClassicBoxVariant {
@@ -27,8 +28,8 @@ public class ClientClassicBoxShalkaVariant extends ClientClassicBoxVariant {
     }
 
     @Override
-    public SimpleExteriorModel model() {
-        return new ClassicHudolinExteriorModel(ClassicHudolinExteriorModel.getTexturedModelData().createModel());
+    public ExteriorModel model() {
+        return super.model();
     }
 
     @Override

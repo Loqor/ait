@@ -1,0 +1,7 @@
+{
+  "watermark": "made with duzos ait generator",
+  "id": "ait:copper_oregano",
+  "parent": "ait:copper",
+  "texture": "ait:textures/blockentities/consoles/copper_oregano.png",
+  "emission": "ait:textures/blockentities/consoles/copper_oregano_emission.png"
+}

@@ -1,0 +1,6 @@
+{
+  "watermark": "made with duzos ait generator",
+  "id": "ait:hartnell_wooden",
+  "parent": "ait:hartnell",
+  "texture": "ait:textures/blockentities/consoles/hartnell_wooden_console.png"
+}

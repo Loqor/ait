@@ -1,0 +1,378 @@
+{
+  "watermark": "made with duzos ait generator",
+  "id": "ait:hartnell",
+  "type": {
+    "id": "ait:hartnell",
+    "name": "Redux Hartnell",
+    "controls": [
+      {
+        "id": "ait:throttle",
+        "width": 0.12499998,
+        "height": 0.099999994,
+        "offset": [
+          -0.37109375,
+          0.4999998565763235,
+          0.9755859375
+        ],
+        "animation": "hartnell:mlever1"
+      },
+      {
+        "id": "ait:handbrake",
+        "width": 0.125,
+        "height": 0.099999994,
+        "offset": [
+          -0.041015625,
+          0.4999998565763235,
+          0.9755859375
+        ],
+        "animation": "hartnell:mlever2"
+      },
+      {
+        "id": "ait:protocol_116",
+        "width": 0.125,
+        "height": 0.1,
+        "offset": [
+          -0.19687499664723873,
+          0.47500018775463104,
+          0.9875000109896064
+        ],
+        "animation": "hartnell:stswitch"
+      },
+      {
+        "id": "ait:fast_return",
+        "width": 0.075,
+        "height": 0.075,
+        "offset": [
+          0.24960938468575478,
+          0.6249999515712261,
+          0.6625000154599547
+        ],
+        "animation": "hartnell:fastreturn"
+      },
+      {
+        "id": "ait:door_control",
+        "width": 0.1125,
+        "height": 0.07499997,
+        "offset": [
+          0.7843749998137355,
+          0.5249998569488525,
+          -0.5015625143423676
+        ],
+        "animation": "hartnell:bone123"
+      },
+      {
+        "id": "ait:door_lock",
+        "width": 0.1125,
+        "height": 0.07499997,
+        "offset": [
+          0.6601562481373549,
+          0.5249997079372406,
+          -0.7000000029802322
+        ],
+        "animation": "hartnell:bone125"
+      },
+      {
+        "id": "ait:antigravs",
+        "width": 0.1,
+        "height": 0.0875,
+        "offset": [
+          0.10312499292194843,
+          0.4875000938773155,
+          0.9656250094994903
+        ],
+        "animation": "hartnell:stswitch1"
+      },
+      {
+        "id": "ait:monitor",
+        "width": 0.20000002,
+        "height": 0.1125,
+        "offset": [
+          0.7125000013038516,
+          0.5375015260651708,
+          -0.1628906326368451
+        ]
+      },
+      {
+        "id": "ait:telepathic_circuit",
+        "width": 0.17500004,
+        "height": 0.15,
+        "offset": [
+          -0.0007812418043613434,
+          0.4874999513849616,
+          -0.7267578281462193
+        ]
+      },
+      {
+        "id": "ait:land_type",
+        "width": 0.20000002,
+        "height": 0.099999994,
+        "offset": [
+          -0.34687500167638063,
+          0.46500000916421413,
+          -0.9546875022351742
+        ],
+        "animation": "hartnell:sknob"
+      },
+      {
+        "id": "ait:increment",
+        "width": 0.125,
+        "height": 0.0875,
+        "offset": [
+          -0.6753906365483999,
+          0.4875000948086381,
+          -0.8363281516358256
+        ],
+        "animation": "hartnell:scrank3"
+      },
+      {
+        "id": "ait:x",
+        "width": 0.074999996,
+        "height": 0.099999994,
+        "offset": [
+          -0.5355468858033419,
+          0.5875000013038516,
+          -0.3718750197440386
+        ],
+        "animation": "hartnell:slever2"
+      },
+      {
+        "id": "ait:y",
+        "width": 0.074999996,
+        "height": 0.1,
+        "offset": [
+          -0.6503906389698386,
+          0.5500000007450581,
+          -0.43632814567536116
+        ],
+        "animation": "hartnell:slever3"
+      },
+      {
+        "id": "ait:z",
+        "width": 0.074999996,
+        "height": 0.1,
+        "offset": [
+          -0.7750000171363354,
+          0.5125000961124897,
+          -0.5113281467929482
+        ],
+        "animation": "hartnell:slever4"
+      },
+      {
+        "id": "ait:randomiser",
+        "width": 0.06249999,
+        "height": 0.125,
+        "offset": [
+          -0.9531250046566129,
+          0.4624999985098839,
+          -0.3609375013038516
+        ],
+        "animation": "hartnell:ctrlswitch"
+      },
+      {
+        "id": "ait:direction",
+        "width": 0.1,
+        "height": 0.1,
+        "offset": [
+          -1.1007812544703484,
+          0.4750000946223736,
+          0.150390625
+        ],
+        "animation": "hartnell:scrank1"
+      },
+      {
+        "id": "ait:protocol_19",
+        "width": 0.07499999,
+        "height": 0.1,
+        "offset": [
+          0.5539062647148967,
+          0.5749997571110725,
+          0.3144531222060323
+        ],
+        "animation": "hartnell:slever7"
+      },
+      {
+        "id": "ait:protocol_813",
+        "width": 0.07499999,
+        "height": 0.1,
+        "offset": [
+          -0.7218750026077032,
+          0.5749999508261681,
+          0.10117187909781933
+        ],
+        "animation": "hartnell:slever"
+      },
+      {
+        "id": "ait:protocol_3",
+        "width": 0.1125,
+        "height": 0.1,
+        "offset": [
+          -0.03515623975545168,
+          0.4750000908970833,
+          -1.0359375169500709
+        ],
+        "animation": "hartnell:bone107"
+      },
+      {
+        "id": "ait:protocol_1913",
+        "width": 0.112500004,
+        "height": 0.0875,
+        "offset": [
+          -0.43515624571591616,
+          0.5749998092651367,
+          0.5015625059604645
+        ],
+        "animation": "hartnell:slswitch5"
+      },
+      {
+        "id": "ait:dimension",
+        "width": 0.099999994,
+        "height": 0.099999994,
+        "offset": [
+          -0.9156250208616257,
+          0.482499978505075,
+          0.43984376080334187
+        ],
+        "animation": "hartnell:miscctrl"
+      },
+      {
+        "id": "ait:refueler",
+        "width": 0.1125,
+        "height": 0.08749999,
+        "offset": [
+          0.30000001285225153,
+          0.4874998088926077,
+          -1.042968776077032
+        ],
+        "animation": "hartnell:bone106"
+      },
+      {
+        "id": "ait:alarms",
+        "width": 0.074999996,
+        "height": 0.1,
+        "offset": [
+          0.516015631146729,
+          0.5750001845881343,
+          0.40332030411809683
+        ],
+        "animation": "hartnell:slever6"
+      },
+      {
+        "id": "ait:power",
+        "width": 0.125,
+        "height": 0.1,
+        "offset": [
+          0.7906250040978193,
+          0.5250002853572369,
+          0.45234375074505806
+        ],
+        "animation": "hartnell:mlever142"
+      },
+      {
+        "id": "ait:console_port",
+        "width": 0.16250001,
+        "height": 0.0875,
+        "offset": [
+          -0.42500000912696123,
+          0.6000001896172762,
+          0.24140623956918716
+        ]
+      },
+      {
+        "id": "ait:save_waypoint",
+        "width": 0.074999996,
+        "height": 0.0875,
+        "offset": [
+          0.18749999906867743,
+          0.47500019054859877,
+          0.940820312127471
+        ],
+        "animation": "hartnell:stswitch2"
+      },
+      {
+        "id": "ait:visualiser",
+        "width": 0.17500001,
+        "height": 0.0875,
+        "offset": [
+          -0.8250000150874257,
+          0.47500014305114746,
+          0.5783206885680556
+        ]
+      },
+      {
+        "id": "ait:engine_overload",
+        "width": 0.1125,
+        "height": 0.1,
+        "offset": [
+          0.06484375149011612,
+          0.47500014305114746,
+          -1.0359373092651367
+        ],
+        "animation": "hartnell:bone108"
+      },
+      {
+        "id": "ait:load_waypoint",
+        "width": 0.07499999,
+        "height": 0.1,
+        "offset": [
+          -0.9609375260770321,
+          0.4625005563721061,
+          -0.2228515725582838
+        ],
+        "animation": "hartnell:slswitch9"
+      },
+      {
+        "id": "ait:sonic_port",
+        "width": 0.125,
+        "height": 0.08749999,
+        "offset": [
+          -0.4359374921768904,
+          0.6249999944120646,
+          -0.26015625055879354
+        ]
+      },
+      {
+        "id": "ait:electrical_discharge",
+        "width": 0.099999994,
+        "height": 0.087499976,
+        "offset": [
+          0.7343742363154888,
+          0.5249996185302734,
+          -0.5765621196478605
+        ],
+        "animation": "hartnell:bone121"
+      },
+      {
+        "id": "ait:shields",
+        "width": 0.099999994,
+        "height": 0.07499999,
+        "offset": [
+          -0.5734374923631549,
+          0.5374997593462467,
+          0.662500019185245
+        ],
+        "animation": "hartnell:slswitch6"
+      }
+    ]
+  },
+  "texture": "ait:textures/blockentities/consoles/hartnell_console.png",
+  "model": "ait:hartnell",
+  "transformations": {
+    "offset": [
+      0.5,
+      0,
+      -0.5
+    ],
+    "rotation": [
+      0,
+      90,
+      0
+    ]
+  },
+  "animations": {
+    "demat": "hartnell:flight",
+    "flight": "hartnell:flight",
+    "mat": "hartnell:flight",
+    "landed": "hartnell:idle"
+  },
+  "emission": "ait:textures/blockentities/consoles/hartnell_console_emission.png"
+}

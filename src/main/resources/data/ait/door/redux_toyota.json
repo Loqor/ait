@@ -1,0 +1,21 @@
+{
+  "id": "ait:door/redux_toyota",
+  "open_sound": "ait:tardis/police_box_door_open",
+  "close_sound": "ait:tardis/police_box_door_close",
+  "model": "ait:toyota_door",
+  "is_double": true,
+  "portal_info": {
+    "north": [0.0, 0.05, -0.45],
+    "south": [0.0, 0.05, 0.45],
+    "east": [0.45, 0.05, 0.0],
+    "west": [-0.45, 0.05, 0.0]
+  },
+  "door_animations": {
+    "left": "toyota:leftdooropen",
+    "right": "toyota:rightdooropen",
+    "left_close": "toyota:leftdoorclose",
+    "right_close": "toyota:rightdoorclose"
+  },
+  "scale": [0.63, 0.63, 0.63]
+}
+

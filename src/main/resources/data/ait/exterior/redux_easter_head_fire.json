@@ -1,0 +1,12 @@
+{
+  "id": "ait:exterior/easter_head/redux_fire",
+  "category": "ait:exterior/easter_head",
+  "parent": "ait:exterior/easter_head/fire",
+  "texture": "ait:textures/blockentities/exteriors/easter_head/easter_head_fire.png",
+  "model": "ait:easter_head",
+  "door": "ait:door/redux_easter_head",
+  "door_animations": {
+    "left": "easter_head:easter_head.exterior.open.animation",
+    "left_close": "easter_head:easter_head.exterior.close.animation"
+  }
+}
