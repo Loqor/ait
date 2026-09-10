@@ -5,12 +5,14 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Predicate;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
 import net.minecraft.text.Text;
@@ -19,10 +21,12 @@ import net.minecraft.util.math.Vec3d;
 
 import dev.amble.ait.AITMod;
 import dev.amble.ait.core.tardis.control.ControlTypes;
+import dev.amble.ait.core.util.Transformations;
 import dev.amble.ait.data.codec.MoreCodec;
 import dev.amble.ait.data.schema.console.ConsoleTypeSchema;
 import dev.amble.ait.data.schema.console.ConsoleVariantSchema;
 import dev.amble.ait.registry.impl.console.ConsoleRegistry;
+import dev.amble.ait.registry.impl.console.variant.ConsoleVariantRegistry;
 
 // Example usage
 /*
@@ -36,16 +40,6 @@ import dev.amble.ait.registry.impl.console.ConsoleRegistry;
 public class DatapackConsole extends ConsoleVariantSchema implements TravelAnimationMap.Holder {
     public static final Identifier EMPTY = AITMod.id("intentionally_empty");
 
-    protected final Identifier texture;
-    protected final Identifier emission;
-    protected final Identifier id;
-    protected final List<Float> sonicRotation;
-    protected final Vector3f sonicTranslation;
-    protected final List<Float> handlesRotation;
-    protected final Vector3f handlesTranslation;
-    protected final Identifier model;
-    protected final Vec3d scale;
-    protected final Vec3d offset;
     public static final Codec<DatapackConsole> CODEC = RecordCodecBuilder.create(instance -> instance
             .group(Identifier.CODEC.fieldOf("id").forGetter(ConsoleVariantSchema::id),
                     Identifier.CODEC.optionalFieldOf("parent").forGetter(c -> Optional.ofNullable(c.parentId())),
@@ -58,15 +52,24 @@ public class DatapackConsole extends ConsoleVariantSchema implements TravelAnima
                             .forGetter(DatapackConsole::handlesRotation),
                     MoreCodec.VECTOR3F.optionalFieldOf("handles_translation", new Vector3f()).forGetter(DatapackConsole::handlesTranslation),
                     Identifier.CODEC.optionalFieldOf("model").forGetter(DatapackConsole::model),
-                    Vec3d.CODEC.optionalFieldOf("scale", new Vec3d(1, 1, 1)).forGetter(DatapackConsole::getScale),
-                    Vec3d.CODEC.optionalFieldOf("offset", new Vec3d(0, 0, 0)).forGetter(DatapackConsole::getOffset),
+		            Transformations.CODEC.optionalFieldOf("transformations", Transformations.MISSING).forGetter(DatapackConsole::getTransformations),
                     TravelAnimationMap.CODEC.optionalFieldOf("animations", new TravelAnimationMap())
                             .forGetter(DatapackConsole::getAnimations),
                     SimpleType.CODEC.optionalFieldOf("type").forGetter(DatapackConsole::getCustomType),
                     Codec.BOOL.optionalFieldOf("isDatapack", true).forGetter(DatapackConsole::wasDatapack))
             .apply(instance, DatapackConsole::new));
+	protected Identifier texture;
+    protected final Identifier id;
+	protected Identifier emission;
+	protected List<Float> sonicRotation;
+	protected Vector3f sonicTranslation;
+	protected List<Float> handlesRotation;
+	protected Vector3f handlesTranslation;
+	protected Identifier model;
+	protected Transformations transformations;
     protected boolean initiallyDatapack;
-    protected final TravelAnimationMap animations;
+	protected TravelAnimationMap animations;
+	private boolean animationsResolved;
 
     public DatapackConsole(Identifier id,
                            Optional<Identifier> category,
@@ -77,8 +80,7 @@ public class DatapackConsole extends ConsoleVariantSchema implements TravelAnima
                            List<Float> handlesRot,
                            Vector3f handlesTranslation,
                            Optional<Identifier> model,
-                           Vec3d scale,
-                           Vec3d offset,
+                           Transformations transformations,
                            TravelAnimationMap animations,
                            Optional<SimpleType> type,
                            boolean isDatapack) {
@@ -92,8 +94,7 @@ public class DatapackConsole extends ConsoleVariantSchema implements TravelAnima
         this.handlesRotation = handlesRot;
         this.handlesTranslation = handlesTranslation;
         this.model = model.orElse(null);
-        this.scale = scale;
-        this.offset = offset;
+	    this.transformations = transformations;
         this.animations = animations != null ? animations : new TravelAnimationMap();
     }
 
@@ -139,19 +140,46 @@ public class DatapackConsole extends ConsoleVariantSchema implements TravelAnima
     }
 
     public Optional<Identifier> model() {
+	    if (this.model == null) {
+		    ConsoleVariantSchema parentConsole = getSameParent(val -> val instanceof DatapackConsole val2 && val2.model != null);
+		    if (parentConsole instanceof DatapackConsole datapackParent) {
+			    this.model = datapackParent.model;
+		    }
+	    }
+
         return Optional.ofNullable(model);
     }
 
+	@Deprecated(forRemoval = true)
     public Vec3d getScale() {
-        return scale;
+		return getTransformations().scale();
     }
 
+	@Deprecated(forRemoval = true)
     public Vec3d getOffset() {
-        return offset;
-    }
+		return getTransformations().offset();
+	}
+
+	public Transformations getTransformations() {
+		if (transformations.equals(Transformations.MISSING)) {
+			transformations = (getSameParent(val -> val instanceof DatapackConsole val2 && !val2.transformations.equals(Transformations.MISSING)) instanceof DatapackConsole other) ? other.getTransformations() : Transformations.DEFAULT;
+		}
+
+		return transformations;
+	}
 
     @Override
     public TravelAnimationMap getAnimations() {
+	    // Resolved once. This is read every frame by the console renderer, and a variant with no
+	    // animations of its own and no sibling to borrow from re-ran the whole sibling search, and
+	    // logged from it, on each of those frames.
+	    if (!this.animationsResolved) {
+		    this.animationsResolved = true;
+
+		    if (animations.isEmpty() && getSameParent(val -> val instanceof DatapackConsole val2 && !val2.animations.isEmpty()) instanceof DatapackConsole datapackParent)
+			    this.animations = datapackParent.getAnimations();
+	    }
+
         return animations;
     }
 
@@ -160,6 +188,18 @@ public class DatapackConsole extends ConsoleVariantSchema implements TravelAnima
             return Optional.of(simpleType);
         }
         return Optional.empty();
+    }
+
+	public @Nullable ConsoleVariantSchema getSameParent(Predicate<ConsoleVariantSchema> predicate) {
+        if (this.parent() == null) return null;
+
+        Optional<ConsoleVariantSchema> found = ConsoleVariantRegistry.withParent(this.parent()).stream().filter(val -> val != this).filter(predicate).findAny();
+
+        if (found.isPresent()) return found.get();
+
+        AITMod.LOGGER.warn("DatapackConsole {} could not find parent variant matching predicate", this.id());
+
+        return ConsoleVariantRegistry.HARTNELL;
     }
 
     public static DatapackConsole fromInputStream(InputStream stream) {
@@ -174,7 +214,20 @@ public class DatapackConsole extends ConsoleVariantSchema implements TravelAnima
             AITMod.LOGGER.error("Error decoding datapack console variant: {}", err);
         });
 
-        return created.get();
+        DatapackConsole console = created.get();
+
+        // legacy support: older datapacks set top-level "scale"/"offset" instead of a "transformations" object
+        if (console != null && console.transformations.equals(Transformations.MISSING) && (json.has("scale") || json.has("offset"))) {
+            Vec3d scale = json.has("scale")
+                    ? Vec3d.CODEC.parse(JsonOps.INSTANCE, json.get("scale")).result().orElse(Transformations.DEFAULT.scale())
+                    : Transformations.DEFAULT.scale();
+            Vec3d offset = json.has("offset")
+                    ? Vec3d.CODEC.parse(JsonOps.INSTANCE, json.get("offset")).result().orElse(Transformations.DEFAULT.offset())
+                    : Transformations.DEFAULT.offset();
+            console.transformations = new Transformations(offset, scale, Transformations.DEFAULT.rotation());
+        }
+
+        return console;
     }
 
     public static class SimpleType extends ConsoleTypeSchema {

@@ -1,11 +1,5 @@
 package dev.amble.ait.core.tardis.control.impl;
 
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.text.Text;
-import net.minecraft.util.math.BlockPos;
-
 import dev.amble.ait.AITMod;
 import dev.amble.ait.core.AITSounds;
 import dev.amble.ait.core.blockentities.ConsoleBlockEntity;
@@ -14,6 +8,12 @@ import dev.amble.ait.core.tardis.control.Control;
 import dev.amble.ait.core.util.SafePosSearch;
 import dev.amble.ait.data.schema.console.variant.coral.*;
 import dev.amble.ait.data.schema.console.variant.renaissance.*;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.text.Text;
+import net.minecraft.util.math.BlockPos;
+import org.jetbrains.annotations.Nullable;
 
 public class LandTypeControl extends Control {
     public LandTypeControl() {
@@ -73,4 +73,14 @@ public class LandTypeControl extends Control {
                 consoleBlockEntity.getVariant() instanceof BlueCoralVariant ||
                 consoleBlockEntity.getVariant() instanceof CoralDecayedVariant;
     }
+
+	@Override
+	public float getTargetProgress(Tardis tardis, boolean cooldown, @Nullable ConsoleBlockEntity console) {
+		boolean horizontal = tardis.travel().horizontalSearch().get();
+		SafePosSearch.Kind vertical = tardis.travel().verticalSearch().get();
+
+		float horizontalProgress = horizontal ? 1.0f : 0.0f;
+		float verticalProgress = (float) vertical.ordinal() / (float) (SafePosSearch.Kind.values().length - 1);
+		return (horizontalProgress + verticalProgress) / 2.0f;
+	}
 }

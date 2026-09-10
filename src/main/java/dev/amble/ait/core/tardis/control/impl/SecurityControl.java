@@ -3,7 +3,9 @@ package dev.amble.ait.core.tardis.control.impl;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import org.jetbrains.annotations.Nullable;
 
+import dev.amble.ait.core.blockentities.ConsoleBlockEntity;
 import dev.amble.ait.core.tardis.ServerTardis;
 import dev.amble.ait.core.tardis.manager.old.DeprecatedServerTardisManager;
 import net.minecraft.item.ItemStack;
@@ -110,4 +112,9 @@ public class SecurityControl extends Control {
     public long getDelayLength(Tardis tardis) {
         return 50;
     }
+
+	@Override
+	public float getTargetProgress(Tardis tardis, boolean cooldown, @Nullable ConsoleBlockEntity console) {
+		return tardis.stats().security().get() ? 1.0f : 0.0f;
+	}
 }

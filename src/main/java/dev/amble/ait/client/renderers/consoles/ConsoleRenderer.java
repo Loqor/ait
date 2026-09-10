@@ -32,7 +32,6 @@ import dev.amble.ait.data.datapack.DatapackConsole;
 import dev.amble.ait.data.schema.console.ClientConsoleVariantSchema;
 import dev.amble.ait.data.schema.console.variant.crystalline.client.ClientCrystallineVariant;
 import dev.amble.ait.registry.impl.console.variant.ClientConsoleVariantRegistry;
-
 public class ConsoleRenderer<T extends ConsoleBlockEntity> implements BlockEntityRenderer<T> {
 
     private ClientConsoleVariantSchema variant;

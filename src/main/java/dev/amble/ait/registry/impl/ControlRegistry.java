@@ -1,14 +1,5 @@
 package dev.amble.ait.registry.impl;
 
-import java.util.Optional;
-
-import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
-
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.SimpleRegistry;
-import net.minecraft.util.Identifier;
-
 import dev.amble.ait.AITMod;
 import dev.amble.ait.core.tardis.control.Control;
 import dev.amble.ait.core.tardis.control.impl.*;
@@ -18,6 +9,13 @@ import dev.amble.ait.core.tardis.control.impl.pos.YControl;
 import dev.amble.ait.core.tardis.control.impl.pos.ZControl;
 import dev.amble.ait.core.tardis.control.impl.waypoint.LoadWaypointControl;
 import dev.amble.ait.core.tardis.control.impl.waypoint.SaveWaypointControl;
+import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.SimpleRegistry;
+import net.minecraft.util.Identifier;
+
+import java.util.Optional;
 
 public class ControlRegistry {
 
@@ -38,6 +36,18 @@ public class ControlRegistry {
     public static Optional<Control> fromId(Identifier id) {
         return Optional.ofNullable(REGISTRY.get(id));
     }
+
+	/** What a control id that resolves to nothing falls back to, before the first registered. */
+	private static final Identifier FALLBACK_ID = AITMod.id("throttle");
+
+	public static Control fallback() {
+		Control fallback = fromId(FALLBACK_ID).orElse(REGISTRY.get(0));
+
+		if (fallback == null)
+			throw new IllegalStateException("ControlRegistry is empty; cannot provide a fallback control");
+
+		return fallback;
+	}
 
     public static void init() {
         // Pain.

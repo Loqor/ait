@@ -11,7 +11,9 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import org.jetbrains.annotations.Nullable;
 
+import dev.amble.ait.core.blockentities.ConsoleBlockEntity;
 import dev.amble.ait.AITMod;
 import dev.amble.ait.core.AITSounds;
 import dev.amble.ait.core.AITTags;
@@ -118,4 +120,10 @@ public class ConsolePortControl extends Control {
     public SoundEvent getFallbackSound() {
         return SoundEvents.INTENTIONALLY_EMPTY;
     }
+
+	@Override
+	public float getTargetProgress(Tardis tardis, boolean cooldown, @Nullable ConsoleBlockEntity console) {
+		// check if we have a disc or waypoint
+		return tardis.extra().getInsertedDisc().isEmpty() && !tardis.waypoint().hasWaypoint() ? 0.0f : 1.0f;
+	}
 }

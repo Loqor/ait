@@ -1,5 +1,7 @@
 package dev.amble.ait.registry.impl.console.variant;
 
+import java.util.function.Predicate;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
 import net.minecraft.network.PacketByteBuf;
@@ -102,6 +104,8 @@ public class ClientConsoleVariantRegistry extends DatapackRegistry<ClientConsole
 
         return new ClientConsoleVariantSchema(variant.id()) {
             private ClientConsoleVariantSchema sameParent; // a variant with the same parent as this one, so we have the same models n that
+	        private @Nullable Identifier texture = null;
+	        private @Nullable Identifier emission = null;
 
             private ClientConsoleVariantSchema getSameParent() {
                 if (sameParent == null) {
@@ -111,14 +115,51 @@ public class ClientConsoleVariantRegistry extends DatapackRegistry<ClientConsole
                 return sameParent;
             }
 
+	        private ClientConsoleVariantSchema getSameParent(Predicate<ClientConsoleVariantSchema> predicate) {
+		        ConsoleVariantSchema thisParent = this.parent();
+		        if (thisParent == null)
+			        return null;
+
+		        for (ClientConsoleVariantSchema schema : ClientConsoleVariantRegistry.getInstance().toList()) {
+			        if (schema == this)
+				        continue;
+
+			        if (schema.parent() == null)
+				        continue;
+
+			        if (schema.parent().parentId().equals(thisParent.parentId()) && predicate.test(schema))
+				        return schema;
+		        }
+
+		        return null;
+	        }
+
             @Override
             public Identifier texture() {
-                return variant.texture();
+	            if (texture == null) {
+		            if (variant.texture().equals(DatapackConsole.EMPTY)) {
+			            ClientConsoleVariantSchema parent = getSameParent(val -> val.parent() instanceof DatapackConsole dp && !dp.texture().equals(DatapackConsole.EMPTY));
+			            texture = parent != null ? parent.texture() : variant.texture();
+		            } else {
+			            texture = variant.texture();
+		            }
+	            }
+
+	            return texture;
             }
 
             @Override
             public Identifier emission() {
-                return variant.emission();
+	            if (emission == null) {
+		            if (variant.emission().equals(DatapackConsole.EMPTY)) {
+			            ClientConsoleVariantSchema parent = getSameParent(val -> val.parent() instanceof DatapackConsole dp && !dp.emission().equals(DatapackConsole.EMPTY));
+			            emission = parent != null ? parent.emission() : variant.emission();
+		            } else {
+			            emission = variant.emission();
+		            }
+	            }
+
+	            return emission;
             }
 
             @Override
@@ -127,7 +168,14 @@ public class ClientConsoleVariantRegistry extends DatapackRegistry<ClientConsole
                     return new BedrockConsoleModel(BedrockModelRegistry.getInstance().get(variant.model().get()));
                 }
 
-                return getSameParent().model();
+	            ClientConsoleVariantSchema parent = getSameParent(val -> val.parent() instanceof DatapackConsole dp && dp.model().isPresent());
+	            if (parent != null) {
+		            return parent.model();
+	            }
+
+                AITMod.LOGGER.warn("Datapack console variant {} has no model set, falling back to Hartnell model", variant.id());
+
+	            return HARTNELL.model();
             }
 
             @Override

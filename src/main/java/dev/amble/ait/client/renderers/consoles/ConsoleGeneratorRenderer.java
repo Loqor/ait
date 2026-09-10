@@ -46,7 +46,7 @@ public class ConsoleGeneratorRenderer<T extends ConsoleGeneratorBlockEntity> imp
     @Override
     public void render(T entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers,
             int light, int overlay) {
-        if (entity.getWorld() == null || !entity.isLinked())
+        if (entity.getWorld() == null || !entity.isLinked() || entity.getConsoleVariant() == null)
             return;
 
         Profiler profiler = entity.getWorld().getProfiler();
@@ -92,8 +92,8 @@ public class ConsoleGeneratorRenderer<T extends ConsoleGeneratorBlockEntity> imp
         matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(MinecraftClient.getInstance().getTickDelta() % 180));
 
         if (console instanceof BedrockConsoleModel bedrockConsoleModel) {
-            bedrockConsoleModel.applyOffsets(matrices, entity.getConsoleVariant());
             matrices.translate(-0.5, 1.5, 0.5);
+            bedrockConsoleModel.applyOffsets(matrices, entity.getConsoleVariant());
         }
 
         //if (powered) {

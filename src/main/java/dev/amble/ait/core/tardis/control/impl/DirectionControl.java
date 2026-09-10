@@ -5,7 +5,9 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
+import org.jetbrains.annotations.Nullable;
 
+import dev.amble.ait.core.blockentities.ConsoleBlockEntity;
 import dev.amble.ait.AITMod;
 import dev.amble.ait.core.AITSounds;
 import dev.amble.ait.core.blocks.ExteriorBlock;
@@ -92,4 +94,12 @@ public class DirectionControl extends Control {
     public SoundEvent getFallbackSound() {
         return AITSounds.DIRECTION;
     }
+
+	@Override
+	public float getTargetProgress(Tardis tardis, boolean cooldown, @Nullable ConsoleBlockEntity console) {
+		// return selected direction / total directions
+		CachedDirectedGlobalPos dest = tardis.travel().destination();
+		int rotation = dest.getRotation();
+		return (float) rotation / (float) ExteriorBlock.MAX_ROTATION_INDEX;
+	}
 }

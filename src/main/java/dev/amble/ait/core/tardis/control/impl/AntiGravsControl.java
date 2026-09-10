@@ -5,7 +5,9 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import org.jetbrains.annotations.Nullable;
 
+import dev.amble.ait.core.blockentities.ConsoleBlockEntity;
 import dev.amble.ait.AITMod;
 import dev.amble.ait.core.AITBlocks;
 import dev.amble.ait.core.AITSounds;
@@ -45,4 +47,9 @@ public class AntiGravsControl extends Control {
     protected SubSystem.IdLike requiredSubSystem() {
         return SubSystem.Id.GRAVITATIONAL;
     }
+
+	@Override
+	public float getTargetProgress(Tardis tardis, boolean cooldown, @Nullable ConsoleBlockEntity console) {
+		return tardis.travel().antigravs().get() ? 1.0f : 0.0f;
+	}
 }

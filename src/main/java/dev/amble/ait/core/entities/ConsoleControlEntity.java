@@ -25,7 +25,9 @@ import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtHelper;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -43,6 +45,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import dev.amble.ait.AITMod;
+import dev.amble.ait.client.tardis.ControlAnimationState;
 import dev.amble.ait.core.AITBlocks;
 import dev.amble.ait.core.AITEntityTypes;
 import dev.amble.ait.core.AITItems;
@@ -82,8 +85,18 @@ public class ConsoleControlEntity extends LinkableDummyEntity {
             TrackedDataHandlerRegistry.BLOCK_POS);
     private static final TrackedData<String> CONTROL_ID = DataTracker.registerData(ConsoleControlEntity.class,
             TrackedDataHandlerRegistry.STRING);
-    private Control control;
+    /**
+     * This control's slot in its console's {@code getControlTypes()}. -1 until set, because 0 is a
+     * real slot and an unset index must not drive another control's animation.
+     */
+    private static final TrackedData<Integer> CONTROL_INDEX = DataTracker.registerData(ConsoleControlEntity.class,
+            TrackedDataHandlerRegistry.INTEGER);
     public static final float MAX_DURABILITY = 1.0f;
+
+    /** Whether the last cooldown pushed to the console was set, so release can be pushed too. */
+    private boolean pushedOnDelay;
+    private Control control;
+    private ControlTypes controlType;
 
     public ConsoleControlEntity(EntityType<? extends Entity> entityType, World world) {
         super(entityType, world);
@@ -100,11 +113,11 @@ public class ConsoleControlEntity extends LinkableDummyEntity {
 
     @Override
     public void onRemoved() {
-        if (this.getConsoleBlockPos() == null) {
-            super.onRemoved();
-            return;
-        }
+        super.onRemoved();
 
+        // No unset case to guard: CONSOLE_BLOCK_POS defaults to BlockPos.ORIGIN and is never
+        // null, so a control with no console simply finds no block entity there. The old guard
+        // meant super was never reached on the live path.
         if (this.getWorld().getBlockEntity(this.getConsoleBlockPos()) instanceof ConsoleBlockEntity console)
             console.markNeedsControl();
     }
@@ -123,9 +136,10 @@ public class ConsoleControlEntity extends LinkableDummyEntity {
         this.dataTracker.startTracking(ON_DELAY, false);
         this.dataTracker.startTracking(CONSOLE_BLOCK_POS, BlockPos.ORIGIN);
         this.dataTracker.startTracking(CONTROL_ID, "");
+        this.dataTracker.startTracking(CONTROL_INDEX, -1);
     }
 
-    @Override
+	@Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
 
@@ -141,6 +155,15 @@ public class ConsoleControlEntity extends LinkableDummyEntity {
         nbt.putBoolean("wasSequenced", this.wasSequenced());
         nbt.putFloat("durability", this.getDurability());
         nbt.putBoolean("sticky", this.isSticky());
+        nbt.putInt("controlIndex", this.getControlIndex());
+
+	    // write control type via codec
+	    if (this.controlType == null) {
+		    AITMod.LOGGER.error("Control type is null for control entity at {}", this.getPos());
+		    return;
+	    }
+	    DataResult<NbtElement> result = ControlTypes.CODEC.encodeStart(NbtOps.INSTANCE, this.controlType);
+	    result.resultOrPartial(AITMod.LOGGER::error).ifPresent(nbtResult -> nbt.put("controlType", nbtResult));
     }
 
     @Override
@@ -171,10 +194,23 @@ public class ConsoleControlEntity extends LinkableDummyEntity {
         if (nbt.contains("wasSequenced"))
             this.setWasSequenced(nbt.getBoolean("wasSequenced"));
 
+        if (nbt.contains("controlIndex"))
+            this.setControlIndex(nbt.getInt("controlIndex"));
+
         if (nbt.contains("durability"))
             this.setDurability(nbt.getFloat("durability"));
         if (nbt.contains("sticky"))
             this.setSticky(nbt.getBoolean("sticky"));
+
+	    if (nbt.contains("controlType")) {
+		    DataResult<ControlTypes> result = ControlTypes.CODEC.parse(NbtOps.INSTANCE, nbt.get("controlType"));
+		    result.resultOrPartial(AITMod.LOGGER::error).ifPresent(controlType -> {
+			    this.controlType = controlType;
+			    this.control = controlType.getControl();
+			    this.dataTracker.set(CONTROL_ID, this.control.id().toString());
+
+		    });
+	    }
     }
 
     public void setConsolePos(BlockPos consoleBlockPos) {
@@ -264,8 +300,10 @@ public class ConsoleControlEntity extends LinkableDummyEntity {
 
     @Override
     public void tick() {
-        if (this.getWorld().isClient())
+	    if (this.getWorld().isClient()) {
+		    this.pushCooldown();
             return;
+	    }
 
         if (this.control == null && this.getConsoleBlockPos() != null)
             this.discard();
@@ -312,7 +350,6 @@ public class ConsoleControlEntity extends LinkableDummyEntity {
 
         return control;
     }
-
     public Vector3f getOffset() {
         return this.dataTracker.get(OFFSET);
     }
@@ -523,6 +560,52 @@ public class ConsoleControlEntity extends LinkableDummyEntity {
         return result.isSuccess();
     }
 
+    /**
+     * Reports this control's cooldown to its console, which is what the renderer reads.
+     *
+     * <p>The console owns the animation state; this entity owns nothing but the cooldown flag,
+     * which is server authoritative and reaches the client only as tracked data. Pushing rather
+     * than being read means no block entity reference is held across ticks, so a console that
+     * goes away without warning cannot be observed stale.
+     *
+     * <p>Pushes while on cooldown and once more on release, then goes quiet. A control with
+     * nothing to report costs nothing, so a console with thirty controls does not pay a block
+     * entity lookup per control per tick; and because release is pushed rather than inferred, a
+     * cooldown ends when it ends instead of when the console stops trusting the last push.
+     */
+    private void pushCooldown() {
+        boolean onDelay = this.isOnDelay();
+
+        if (!onDelay && !this.pushedOnDelay)
+            return;
+
+        int index = this.getControlIndex();
+
+        if (index < 0)
+            return;
+
+        // Deliberately not getConsole(): that warns when the block entity has not loaded yet,
+        // which is the normal case for the first few ticks after a control is synced.
+        if (!(this.getWorld().getBlockEntity(this.getConsoleBlockPos()) instanceof ConsoleBlockEntity console)) {
+            // Nothing to deliver a release to. Forget it rather than retrying every tick: the
+            // console expires an unrenewed cooldown on its own, and a console that comes back
+            // comes back with fresh state anyway.
+            this.pushedOnDelay = false;
+            return;
+        }
+
+        ControlAnimationState state = console.controlAnimation(index);
+
+        if (state == null) {
+            // Not a slot on this console any more, so this control has nothing to drive.
+            this.pushedOnDelay = false;
+            return;
+        }
+
+        state.push(onDelay, console.getAge());
+        this.pushedOnDelay = onDelay;
+    }
+
     public ConsoleBlockEntity getConsole() {
         if (this.getConsoleBlockPos() == null)
             return null;
@@ -560,6 +643,14 @@ public class ConsoleControlEntity extends LinkableDummyEntity {
             serverWorld.spawnParticles(ParticleTypes.SMALL_FLAME, pos.getX(), pos.getY() + 0.2f, pos.getZ(), 1, 0, 0.075f, 0, 0);
     }
 
+    public int getControlIndex() {
+        return this.dataTracker.get(CONTROL_INDEX);
+    }
+
+    public void setControlIndex(int index) {
+        this.dataTracker.set(CONTROL_INDEX, index);
+    }
+
     public BlockPos getConsoleBlockPos() {
         return this.dataTracker.get(CONSOLE_BLOCK_POS);
     }
@@ -573,6 +664,7 @@ public class ConsoleControlEntity extends LinkableDummyEntity {
     public void setControlData(ConsoleTypeSchema consoleType, ControlTypes type, BlockPos consoleBlockPosition, float durability, boolean sticky) {
         this.setConsolePos(consoleBlockPosition);
         this.control = type.getControl();
+        this.controlType = type;
         this.dataTracker.set(CONTROL_ID, this.control.id().toString());
 
         super.setCustomName(this.control.getName(this.tardis().get()));

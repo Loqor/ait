@@ -1,5 +1,11 @@
 package dev.amble.ait.core.tardis.control.impl;
 
+import dev.amble.ait.core.blockentities.ConsoleBlockEntity;
+import dev.amble.ait.AITMod;
+import dev.amble.ait.core.item.HammerItem;
+import dev.amble.ait.core.tardis.Tardis;
+import dev.amble.ait.core.tardis.control.Control;
+import dev.amble.ait.core.tardis.handler.ExtraHandler;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -7,12 +13,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
-
-import dev.amble.ait.AITMod;
-import dev.amble.ait.core.item.HammerItem;
-import dev.amble.ait.core.tardis.Tardis;
-import dev.amble.ait.core.tardis.control.Control;
-import dev.amble.ait.core.tardis.handler.ExtraHandler;
+import org.jetbrains.annotations.Nullable;
 
 public class HammerHangerControl extends Control {
 
@@ -58,4 +59,10 @@ public class HammerHangerControl extends Control {
     public boolean requiresPower() {
         return false;
     }
+
+	@Override
+	public float getTargetProgress(Tardis tardis, boolean cooldown, @Nullable ConsoleBlockEntity console) {
+		ExtraHandler handler = tardis.extra();
+		return (handler.getConsoleHammer() != null && !handler.getConsoleHammer().isEmpty()) ? 1.0f : 0.0f;
+	}
 }

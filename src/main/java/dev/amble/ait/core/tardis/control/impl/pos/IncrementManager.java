@@ -34,7 +34,7 @@ public class IncrementManager extends KeyedTardisComponent {
         tardis.<IncrementManager>handler(Id.INCREMENT).increment().set(increment);
     }
 
-    private static int getIncrementPosition(Tardis tardis) {
+	public static int getIncrementPosition(Tardis tardis) {
         for (int i = 0; i < validIncrements.length; i++) {
             if (increment(tardis) != validIncrements[i])
                 continue;
@@ -61,4 +61,8 @@ public class IncrementManager extends KeyedTardisComponent {
 
         getIncrementPosition(tardis);
     }
+
+	public static int getIncrementSize() {
+		return validIncrements.length;
+	}
 }

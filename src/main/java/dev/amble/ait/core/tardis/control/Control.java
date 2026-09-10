@@ -1,5 +1,6 @@
 package dev.amble.ait.core.tardis.control;
 
+import java.util.Map;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -9,7 +10,9 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import org.jetbrains.annotations.Nullable;
 
+import dev.amble.ait.core.blockentities.ConsoleBlockEntity;
 import dev.amble.ait.AITMod;
 import dev.amble.ait.api.tardis.TardisEvents;
 import dev.amble.ait.core.AITItems;
@@ -160,6 +163,14 @@ public class Control implements Identifiable {
 
         return true;
     }
+
+	/**
+	 * A float to decide where the animation should run to.
+	 * 1 is the entire animation, 0 is none of it.
+	 */
+	public float getTargetProgress(Tardis tardis, boolean cooldown, @Nullable ConsoleBlockEntity console) {
+		return cooldown ? 1.0F : 0.0F;
+	}
 
     @Override
     public boolean equals(Object o) {

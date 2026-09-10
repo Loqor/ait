@@ -1,6 +1,7 @@
 package dev.amble.ait.core.blockentities;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,13 +23,18 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.screen.GenericContainerScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import dev.amble.lib.animation.EffectProvider;
+import org.jetbrains.annotations.Nullable;
 import dev.amble.ait.AITMod;
+import dev.amble.ait.client.tardis.ControlAnimationState;
 import dev.amble.ait.api.ArtronHolderItem;
 import dev.amble.ait.client.tardis.ClientTardis;
 import dev.amble.ait.core.AITBlockEntityTypes;
@@ -53,7 +59,8 @@ import dev.amble.ait.registry.impl.console.ConsoleRegistry;
 import dev.amble.ait.registry.impl.console.variant.ConsoleVariantRegistry;
 import dev.amble.lib.util.ServerLifecycleHooks;
 
-public class ConsoleBlockEntity extends AbstractConsoleBlockEntity implements BlockEntityTicker<ConsoleBlockEntity>, ArtronHolderItem {
+public class ConsoleBlockEntity extends AbstractConsoleBlockEntity
+        implements BlockEntityTicker<ConsoleBlockEntity>, ArtronHolderItem, EffectProvider {
 
     private ItemStack sonicScrewdriver = ItemStack.EMPTY;
     private DefaultedList<ItemStack> inventory = DefaultedList.ofSize(54, ItemStack.EMPTY);
@@ -66,6 +73,19 @@ public class ConsoleBlockEntity extends AbstractConsoleBlockEntity implements Bl
 
     private ConsoleTypeSchema type;
     private ConsoleVariantSchema variant;
+
+    /**
+     * Client side animation state, one slot per entry of {@link #controlTypes()}. Null server
+     * side, where nothing animates.
+     */
+    private ControlAnimationState[] controlAnimations;
+
+    /**
+     * The type schema's controls, held because the renderer reads them every frame and
+     * {@link dev.amble.ait.data.datapack.DatapackConsole.SimpleType#getControlTypes()} builds a
+     * fresh array on each call. Datapack consoles are exactly the ones on that path.
+     */
+    private ControlTypes[] controlTypes;
 
     public int age;
 
@@ -162,7 +182,13 @@ public class ConsoleBlockEntity extends AbstractConsoleBlockEntity implements Bl
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
 
-        this.setType(ConsoleRegistry.getInstance().get(Identifier.tryParse(nbt.getString("type"))));
+        ConsoleTypeSchema schema = ConsoleRegistry.getInstance().get(Identifier.tryParse(nbt.getString("type")));
+
+        // Registry lookups are nullable. Assigning the miss would re-null the type on every
+        // resend, so the fallback in getTypeSchema would warn again and clear the control caches
+        // twice each time, snapping every lever animation.
+        if (schema != null)
+            this.setType(schema);
 
         this.setVariant(ConsoleVariantRegistry.getInstance().get(Identifier.tryParse(nbt.getString("variant"))));
 
@@ -208,13 +234,30 @@ public class ConsoleBlockEntity extends AbstractConsoleBlockEntity implements Bl
     }
 
     public ConsoleTypeSchema getTypeSchema() {
-        if (type == null)
+        if (type == null) {
+            // Worth saying: control animation is driven off this schema, and no hardcoded type
+            // carries animation references, so a console that lands here renders its controls
+            // completely static. Logs once, because setType fills the field in.
+            AITMod.LOGGER.warn("Console at {} has no type schema, falling back to Hartnell; its controls will not animate", this.pos);
             this.setType(ConsoleRegistry.HARTNELL);
+        }
 
         return type;
     }
 
     public void setType(ConsoleTypeSchema schema) {
+        // Guarded because readNbt calls this on every full console resend, and a resend happens
+        // for unrelated things like inserting a sonic. Clearing unconditionally would snap and
+        // replay every lever animation on the console.
+        //
+        // Compared by identity rather than equals: schema equality is id based, and a datapack
+        // reload hands out a new schema object with a different control list under the same id.
+        // The registry returns one instance per id otherwise, so a plain resend still matches.
+        if (schema != this.type) {
+            this.controlTypes = null;
+            this.controlAnimations = null;
+        }
+
         this.type = schema;
         this.markDirty();
     }
@@ -233,6 +276,37 @@ public class ConsoleBlockEntity extends AbstractConsoleBlockEntity implements Bl
 
     public int getAge() {
         return age;
+    }
+
+    /** The type schema's controls. Do not mutate: this is the schema's own array for most types. */
+    public ControlTypes[] controlTypes() {
+        if (this.controlTypes == null)
+            this.controlTypes = this.getTypeSchema().getControlTypes();
+
+        return this.controlTypes;
+    }
+
+    /**
+     * Animation state for one control slot, or null if the index is not a slot on this console.
+     *
+     * <p>Out of range is reachable: a control entity carries the index it was spawned with, and
+     * its console can already be holding a different type schema.
+     */
+    public @Nullable ControlAnimationState controlAnimation(int index) {
+        ControlTypes[] types = this.controlTypes();
+
+        if (index < 0 || index >= types.length)
+            return null;
+
+        if (this.controlAnimations == null || this.controlAnimations.length != types.length)
+            this.controlAnimations = new ControlAnimationState[types.length];
+
+        ControlAnimationState state = this.controlAnimations[index];
+
+        if (state == null)
+            this.controlAnimations[index] = state = new ControlAnimationState();
+
+        return state;
     }
 
     public void useOn(World world, boolean sneaking, PlayerEntity player) {
@@ -282,6 +356,12 @@ public class ConsoleBlockEntity extends AbstractConsoleBlockEntity implements Bl
     }
 
     public void killControls() {
+        // Server authoritative: it writes control state back and discards the entities. It reaches
+        // the client through markRemoved, where the list is always empty, so keep it a no-op rather
+        // than leaving a path that could discard client side control entities.
+        if (this.world == null || this.world.isClient())
+            return;
+
         for (ConsoleControlEntity entity : controlEntities) {
             Control control = entity.getControl();
             if (control != null) {
@@ -307,7 +387,8 @@ public class ConsoleBlockEntity extends AbstractConsoleBlockEntity implements Bl
         ConsoleTypeSchema consoleType = this.getTypeSchema();
         ControlTypes[] controls = consoleType.getControlTypes();
 
-        for (ControlTypes control : controls) {
+        for (int index = 0; index < controls.length; index++) {
+            ControlTypes control = controls[index];
             ConsoleControlEntity controlEntity = ConsoleControlEntity.create(this.world, this.tardis().get());
 
             Vector3f position = current.toCenterPos().toVector3f().add(control.getOffset().x(), control.getOffset().y(),
@@ -322,16 +403,64 @@ public class ConsoleBlockEntity extends AbstractConsoleBlockEntity implements Bl
             boolean sticky = state != null && state.sticky();
 
             controlEntity.setControlData(consoleType, control, this.getPos(), durability, sticky);
+            controlEntity.setControlIndex(index);
 
             serverWorld.spawnEntity(controlEntity);
             this.controlEntities.add(controlEntity);
         }
 
+	    this.markDirty();
         this.needsControls = false;
+    }
+
+    // EffectProvider, so control animations can play their keyframe effects with the console as
+    // the source rather than a control entity. Implemented directly rather than through modkit's
+    // AnimatedBlockEntity, which supplies these same defaults but also drags in AnimatedInstance
+    // and BedrockModelProvider, neither of which this block entity wants.
+
+    @Override
+    public boolean isSilent() {
+        return false;
+    }
+
+    @Override
+    public SoundCategory getSoundCategory() {
+        return SoundCategory.BLOCKS;
+    }
+
+    @Override
+    public float getHeadYaw() {
+        return 0;
+    }
+
+    @Override
+    public float getBodyYaw() {
+        return 0;
+    }
+
+    @Override
+    public float getPitch() {
+        return 0;
+    }
+
+    @Override
+    public Vec3d getEffectPosition(float tickDelta) {
+        return Vec3d.ofCenter(this.getPos());
     }
 
     public void markNeedsControl() {
         this.needsControls = true;
+    }
+
+    /** Keeps control animations advancing while this console is culled and so never drawn. */
+    private void tickControlAnimations() {
+        if (this.controlAnimations == null)
+            return;
+
+        for (ControlAnimationState state : this.controlAnimations) {
+            if (state != null)
+                state.tick();
+        }
     }
 
     @Override
@@ -347,6 +476,7 @@ public class ConsoleBlockEntity extends AbstractConsoleBlockEntity implements Bl
             this.age++;
 
             ANIM_STATE.startIfNotRunning(this.age);
+            this.tickControlAnimations();
             return;
         }
 

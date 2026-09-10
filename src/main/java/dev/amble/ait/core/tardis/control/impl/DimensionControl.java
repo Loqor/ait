@@ -2,6 +2,7 @@ package dev.amble.ait.core.tardis.control.impl;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -12,6 +13,7 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 
+import dev.amble.ait.core.blockentities.ConsoleBlockEntity;
 import dev.amble.ait.AITMod;
 import dev.amble.ait.core.AITSounds;
 import dev.amble.ait.core.lock.LockedDimensionRegistry;
@@ -81,4 +83,14 @@ public class DimensionControl extends Control {
     public SoundEvent getFallbackSound() {
         return AITSounds.DIMENSION;
     }
+
+	@Override
+	public float getTargetProgress(Tardis tardis, boolean cooldown, @Nullable ConsoleBlockEntity console) {
+		// return selected dim / all dims
+		CachedDirectedGlobalPos dest = tardis.travel().destination();
+		int index = Math.max(0, WorldUtil.travelWorldIndex(dest.getWorld()));
+		int total = WorldUtil.getTravelWorlds().size();
+		if (total <= 1) return 0.0f;
+		return (float) index / (float) (total - 1);
+	}
 }

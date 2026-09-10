@@ -1,0 +1,45 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.unknown",
+				"texture_width": 256,
+				"texture_height": 256,
+				"visible_bounds_width": 3,
+				"visible_bounds_height": 3.5,
+				"visible_bounds_offset": [0, 1.25, 0]
+			},
+			"bones": [
+				{
+					"name": "tardis",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{"origin": [-11, 0, -8], "size": [3, 32, 16], "uv": [62, 58]},
+						{"origin": [-11, 0, -8], "size": [3, 32, 16], "pivot": [0, 0, 0], "rotation": [0, 180, 0], "uv": [39, 25]},
+						{"origin": [-11, 0, -8], "size": [3, 32, 16], "pivot": [0, 0, 0], "rotation": [0, 90, 0], "uv": [0, 25]},
+						{"origin": [-8, 32, -8], "size": [16, 8, 16], "uv": [0, 0]},
+						{"origin": [-8, 0.02, -8], "size": [16, 0, 16], "uv": [78, 26]},
+						{"origin": [-8, -0.02, -8], "size": [16, 0, 16], "uv": [62, 9]}
+					]
+				},
+				{
+					"name": "left_door",
+					"parent": "tardis",
+					"pivot": [6.5, 0, -9.5],
+					"cubes": [
+						{"origin": [0, 0, -11], "size": [8, 32, 3], "uv": [23, 74]}
+					]
+				},
+				{
+					"name": "right_door",
+					"parent": "tardis",
+					"pivot": [-6.5, 0, -9.5],
+					"cubes": [
+						{"origin": [-8, 0, -11], "size": [8, 32, 3], "uv": [0, 74]}
+					]
+				}
+			]
+		}
+	]
+}

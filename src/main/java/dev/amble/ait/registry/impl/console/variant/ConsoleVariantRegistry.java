@@ -15,6 +15,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.Vec3d;
 
 import dev.amble.ait.AITMod;
+import dev.amble.ait.core.util.Transformations;
 import dev.amble.ait.data.datapack.DatapackConsole;
 import dev.amble.ait.data.datapack.DatapackExterior;
 import dev.amble.ait.data.schema.console.ConsoleTypeSchema;
@@ -64,8 +65,8 @@ public class ConsoleVariantRegistry extends UnlockableRegistry<ConsoleVariantSch
                 continue;
             }
 
-            buf.encodeAsJson(DatapackConsole.CODEC, new DatapackConsole(schema.id(), Optional.of(schema.parent().id()),
-                    DatapackExterior.DEFAULT_TEXTURE, DatapackExterior.DEFAULT_TEXTURE, List.of(), new Vector3f(), List.of(), new Vector3f(), Optional.empty(), Vec3d.ZERO, Vec3d.ZERO, null, Optional.empty(), false));
+            buf.encodeAsJson(DatapackConsole.CODEC, new DatapackConsole(schema.id(), Optional.of(schema.parentId()),
+		            DatapackExterior.DEFAULT_TEXTURE, DatapackExterior.DEFAULT_TEXTURE, List.of(), new Vector3f(), List.of(), new Vector3f(), Optional.empty(), Transformations.DEFAULT, null, Optional.empty(), false));
         }
 
         ServerPlayNetworking.send(player, this.packet, buf);

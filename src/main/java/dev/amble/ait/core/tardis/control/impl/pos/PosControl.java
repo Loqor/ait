@@ -50,7 +50,7 @@ public abstract class PosControl extends Control {
 
     @Override
     public boolean shouldHaveDelay() {
-        return false;
+	    return true;
     }
 
     @Override
