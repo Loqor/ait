@@ -5,11 +5,16 @@ import java.util.LinkedList;
 
 import com.mojang.blaze3d.platform.GlConst;
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
+import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.Framebuffer;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 
 import dev.amble.ait.client.AITModClient;
 import dev.amble.ait.compat.DependencyChecker;
@@ -49,6 +54,29 @@ public class BOTI {
 
     public static void setFramebufferColor(Framebuffer src, float r, float g, float b, float a) {
         src.setClearColor(r, g, b, a);
+    }
+
+    /** Restores core GL state after a BOTI pass so a failure can never leave the screen black. */
+    public static void resetState() {
+        GL11.glDisable(GL11.GL_STENCIL_TEST);
+        RenderSystem.depthMask(true);
+        client.getFramebuffer().beginWrite(true);
+    }
+
+    /** Solid white block texture, tinted to fill the portal background with a flat sky colour. */
+    public static final Identifier SKY_TEXTURE = new Identifier("textures/block/white_concrete.png");
+
+    /** Snaps a portal offset (block centre → portal) to a cardinal outward normal for BOTI transforms. */
+    public static float[] horizontalNormal(double dx, double dz, float fallbackFacing) {
+        if (Math.abs(dx) < 1.0E-4 && Math.abs(dz) < 1.0E-4) {
+            Direction dir = Direction.fromRotation(fallbackFacing);
+            return new float[]{dir.getOffsetX(), dir.getOffsetZ()};
+        }
+
+        if (Math.abs(dx) >= Math.abs(dz))
+            return new float[]{Math.signum((float) dx), 0};
+
+        return new float[]{0, Math.signum((float) dz)};
     }
 
     /**

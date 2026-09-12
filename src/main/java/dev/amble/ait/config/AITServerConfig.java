@@ -50,6 +50,11 @@ public class AITServerConfig {
     @SerialEntry public boolean allowPortalsBoti = true;
 
     @AutoGen(category = CATEGORY)
+    @IntSlider(min = 1, max = 8, step = 1)
+    @CustomDescription(value = "How many chunks in each direction the built-in BOTI streams through the doorway. Higher values show more of the other side but cost more server chunk-loading.")
+    @SerialEntry public int botiRenderDistance = 3;
+
+    @AutoGen(category = CATEGORY)
     @Boolean(formatter = Boolean.Formatter.YES_NO, colored = true)
     @SerialEntry public boolean tntCanTeleportThroughDoors = true;
 

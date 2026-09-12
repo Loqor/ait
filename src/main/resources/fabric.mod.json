@@ -58,7 +58,8 @@
 	"entrypoints": {
 		"main": [
 			"dev.amble.ait.AITMod",
-			"dev.amble.ait.compat.permissionapi.PermissionAPICompat"
+			"dev.amble.ait.compat.permissionapi.PermissionAPICompat",
+			"dev.loqor.portal.BiggerOnTheInside"
 		],
 		"client": [
 			"dev.amble.ait.client.AITModClient",

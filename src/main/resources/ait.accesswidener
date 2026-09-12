@@ -1,1 +1,30 @@
 accessWidener v2 named
+
+# BOTI: shadow-world rendering helpers
+accessible method net/minecraft/client/render/GameRenderer getFov (Lnet/minecraft/client/render/Camera;FZ)D
+accessible method net/minecraft/client/render/Frustum isVisible (DDDDDD)Z
+accessible method net/minecraft/server/world/ThreadedAnvilChunkStorage sendChunkDataPackets (Lnet/minecraft/server/network/ServerPlayerEntity;Lorg/apache/commons/lang3/mutable/MutableObject;Lnet/minecraft/world/chunk/WorldChunk;)V
+accessible method net/minecraft/client/render/GameRenderer bobView (Lnet/minecraft/client/util/math/MatrixStack;F)V
+
+# BOTI: position a throwaway camera at the portal centre so shadow-world particles render in the doorway
+accessible method net/minecraft/client/render/Camera setPos (DDD)V
+accessible method net/minecraft/client/render/Camera setRotation (FF)V
+
+# BOTI: let PortalParticleManager reuse the main particle manager's stitched atlas + factories
+accessible field net/minecraft/client/particle/ParticleManager factories Lit/unimi/dsi/fastutil/ints/Int2ObjectMap;
+mutable field net/minecraft/client/particle/ParticleManager factories Lit/unimi/dsi/fastutil/ints/Int2ObjectMap;
+accessible field net/minecraft/client/particle/ParticleManager spriteAwareFactories Ljava/util/Map;
+mutable field net/minecraft/client/particle/ParticleManager spriteAwareFactories Ljava/util/Map;
+accessible field net/minecraft/client/particle/ParticleManager particleAtlasTexture Lnet/minecraft/client/texture/SpriteAtlasTexture;
+mutable field net/minecraft/client/particle/ParticleManager particleAtlasTexture Lnet/minecraft/client/texture/SpriteAtlasTexture;
+
+# BOTI: advance the shadow world's clock each client tick so time-driven animations (banners) stay smooth
+accessible method net/minecraft/client/world/ClientWorld tickTime ()V
+
+# BOTI: temporarily reroute the shadow world's ambient display-tick particles into the per-portal manager
+accessible field net/minecraft/client/MinecraftClient particleManager Lnet/minecraft/client/particle/ParticleManager;
+mutable field net/minecraft/client/MinecraftClient particleManager Lnet/minecraft/client/particle/ParticleManager;
+
+# BOTI: PortalData#create copies the main world's biome seed into the shadow ClientWorld
+accessible field net/minecraft/world/biome/source/BiomeAccess seed J
+accessible field net/minecraft/network/packet/s2c/play/ChunkDeltaUpdateS2CPacket sectionPos Lnet/minecraft/util/math/ChunkSectionPos;
